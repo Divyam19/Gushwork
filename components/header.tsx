@@ -1,11 +1,12 @@
 import { formatInTimeZone } from 'date-fns-tz';
 import { PackageIcon } from 'lucide-react';
 import { AddLeadDialog } from '@/components/add-lead-dialog';
+import { SearchPalette, type SearchLead } from '@/components/search-palette';
 import { RepSwitcher } from '@/components/rep-switcher';
 import { TZ } from '@/lib/dates';
 import type { MockRep } from '@/lib/mock';
 
-export function Header({ reps, rep }: { reps: MockRep[]; rep: string | null }) {
+export function Header({ reps, rep, leads }: { reps: MockRep[]; rep: string | null; leads: SearchLead[] }) {
   return (
     <header className="flex flex-wrap items-center justify-between gap-4">
       <div className="flex items-center gap-3">
@@ -19,6 +20,7 @@ export function Header({ reps, rep }: { reps: MockRep[]; rep: string | null }) {
       </div>
       <div className="flex items-center gap-3">
         <RepSwitcher reps={reps} selected={rep} />
+        <SearchPalette leads={leads} rest={rep ? `rep=${rep}` : ''} />
         <AddLeadDialog reps={reps} rep={rep} />
       </div>
     </header>

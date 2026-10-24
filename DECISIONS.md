@@ -82,3 +82,9 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-26 · WhatsApp parsing runs client-side; server trusts a validated messages array
 **Decision** `lib/whatsapp-parser.ts` is pure and runs in the dialogs so the rep sees a parsed preview before saving; routes validate `{sender,text,sent_at}` with zod. Timestamps in exports are treated as IST; media and system lines are skipped and counted. Failed analysis on Add lead keeps the lead (saved, shown without analysis) and toasts the error.
+
+## D-27 · Daily reseed cron + file tracing
+**Decision** `vercel.json` cron `0 19 * * *` (00:30 IST) calls `/api/cron/reseed`, which 401s unless `Authorization: Bearer $CRON_SECRET` matches (and fails closed if the secret is unset). `outputFileTracingIncludes` ships `mock-data/**` with that route since the seed reads it from disk. **Trade-off** reviewer edits reset nightly (D-05).
+
+## D-28 · Search palette is client-side over the already-loaded leads
+**Decision** Cmd/Ctrl+K filters the 25 leads passed from the server in-memory via cmdk. No search endpoint. **Why** Tiny dataset; zero latency.

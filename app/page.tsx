@@ -22,7 +22,7 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
 
   return (
     <>
-      <Header reps={reps} rep={rep} />
+      <Header reps={reps} rep={rep} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
       <StatsRow stats={q.stats} />
       <LeadList q={q} ctx={{ reps, today, showRep: !rep, rest, mostUrgentId: q.mostUrgentId }} />
       {items.some((i) => i.analysis?.status === 'analyzing') && <AutoRefresh />}
