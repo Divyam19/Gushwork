@@ -1,5 +1,7 @@
-import { AlarmClockIcon, CalendarDaysIcon, CheckCircle2Icon, FlameIcon, SunIcon } from 'lucide-react';
+import { AlarmClockIcon, CalendarDaysIcon, CheckCircle2Icon, FlameIcon, SunIcon, UsersIcon } from 'lucide-react';
 import Link from 'next/link';
+import { RepAvatar } from '@/components/rep-avatar';
+import type { MockRep } from '@/lib/mock';
 import type { Queue } from '@/lib/queue';
 import { cn } from '@/lib/utils';
 
@@ -27,11 +29,28 @@ function Ring({ done, total }: { done: number; total: number }) {
   );
 }
 
-export function ViewNav({ q, view, href }: { q: Queue; view: ViewId; href: (v: ViewId) => string }) {
+export function ViewNav({ q, view, href, rep, allHref }: { q: Queue; view: ViewId; href: (v: ViewId) => string; rep?: MockRep; allHref: string }) {
   const { stats } = q;
   const total = stats.overdue + stats.dueToday + stats.sentToday;
   return (
     <aside className="flex flex-col gap-4 border-zinc-200 p-3 md:border-r md:p-4">
+      {rep && (
+        <div className="flex items-center gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50 p-2.5 md:flex-col md:items-stretch">
+          <div className="flex min-w-0 flex-1 items-center gap-2.5">
+            <RepAvatar rep={rep} />
+            <div className="min-w-0 leading-tight">
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-indigo-500">Viewing</p>
+              <p className="truncate text-sm font-semibold text-zinc-900">{rep.name}&apos;s leads</p>
+            </div>
+          </div>
+          <Link
+            href={allHref}
+            className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 transition hover:bg-indigo-100"
+          >
+            <UsersIcon className="size-3.5" /> Show all reps
+          </Link>
+        </div>
+      )}
       <p className="hidden px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400 md:block">Follow-ups</p>
       <nav aria-label="Views" className="-mx-1 flex gap-1 overflow-x-auto px-1 [scrollbar-width:none] md:mx-0 md:flex-col md:overflow-visible md:px-0">
         {VIEWS.map((v) => {

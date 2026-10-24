@@ -36,7 +36,7 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
     <>
       <Header reps={reps} rep={rep} view={viewParam} rest={rest} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
       <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[236px_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)]">
-        <ViewNav q={q} view={view} href={(v) => `/?${qs(v)}`} />
+        <ViewNav q={q} view={view} href={(v) => `/?${qs(v)}`} rep={reps.find((r) => r.id === rep)} allHref={viewParam ? `/?view=${viewParam}` : '/'} />
         <section className="flex min-h-0 flex-col gap-3 p-3 md:p-5">
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
