@@ -30,19 +30,19 @@ export function RepSwitcher({ reps, selected, view }: { reps: MockRep[]; selecte
   );
 }
 
-/** Phone version: big scrollable chips with names, in the page flow (the header has no room for 44px targets). */
+/** Phone version: scrollable chips with names, in the page flow. 36px visually; the ::after pads the tap area to 44px. */
 export function RepChips({ reps, selected, view }: { reps: MockRep[]; selected: string | null; view: string | null }) {
   const v = view ? `view=${view}` : '';
   const chip = (active: boolean) =>
     cn(
-      'flex h-10 shrink-0 items-center gap-2 rounded-full px-3.5 text-sm font-medium ring-1 transition-[background-color,color,transform] active:scale-95',
+      'relative flex h-9 shrink-0 items-center after:absolute after:inset-x-0 after:-inset-y-1 gap-1.5 rounded-full px-3 text-[13px] font-medium ring-1 transition-[background-color,color,transform] active:scale-95',
       active ? 'bg-zinc-900 text-white ring-zinc-900' : 'bg-white text-zinc-700 ring-zinc-200',
     );
   return (
-    <nav aria-label="Switch rep" className="flex gap-2 overflow-x-auto px-3 pt-3 [scrollbar-width:none] md:hidden">
+    <nav aria-label="Switch rep" className="flex gap-1.5 overflow-x-auto px-4 pt-3 pb-1 [scrollbar-width:none] md:hidden">
       <Link href={v ? `/?${v}` : '/'} aria-current={!selected} className={chip(!selected)}>All reps</Link>
       {reps.map((r) => (
-        <Link key={r.id} href={`/?rep=${r.id}${v ? `&${v}` : ''}`} aria-current={selected === r.id} className={cn(chip(selected === r.id), 'pl-1.5')}>
+        <Link key={r.id} href={`/?rep=${r.id}${v ? `&${v}` : ''}`} aria-current={selected === r.id} className={cn(chip(selected === r.id), 'pl-1')}>
           <RepAvatar rep={r} size="sm" /> {r.name.split(' ')[0]}
         </Link>
       ))}

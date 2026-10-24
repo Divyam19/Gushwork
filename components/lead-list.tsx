@@ -43,7 +43,7 @@ export function LeadTable({ q, view, ctx }: { q: Queue; view: ViewId; ctx: Ctx }
   else body = q.doneToday.length ? <Rows items={q.doneToday} ctx={ctx} faded /> : <Empty>Nothing sent yet today.</Empty>;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-xs">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden border-y border-zinc-200 bg-white md:rounded-xl md:border md:shadow-xs">
       <div className={cn(COLS, 'max-md:hidden border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-[11px] font-semibold uppercase tracking-wide text-zinc-500')}>
         <span>Lead</span>
         <span className="hidden md:block">Status</span>

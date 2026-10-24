@@ -37,13 +37,14 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
   return (
     <>
       <Header reps={reps} rep={rep} view={viewParam} rest={rest} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
-      <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[236px_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)]">
+      {/* A plain column on phones: grid rows would stretch to fill the screen height. */}
+      <div className="flex min-h-0 flex-1 flex-col md:grid md:grid-cols-[236px_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)]">
         <RepChips reps={reps} selected={rep} view={viewParam} />
         <ViewNav q={q} view={view} rep={reps.find((r) => r.id === rep)} allHref={viewParam ? `/?view=${viewParam}` : '/'} />
-        <section className="flex min-h-0 flex-col gap-3 p-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:p-5">
-          <div className="flex flex-wrap items-end justify-between gap-2">
+        <section className="flex min-h-0 flex-1 flex-col gap-2 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:gap-3 md:p-5">
+          <div className="flex flex-wrap items-end justify-between gap-2 px-4 pt-1 md:p-0">
             <div>
-              <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight text-zinc-900">
+              <h1 className="max-md:sr-only flex items-center gap-2 text-lg font-semibold tracking-tight text-zinc-900">
                 {meta.label}
                 <span className={`rounded-full px-2 py-px text-xs font-semibold tabular-nums ${meta.badge}`}>{viewCount(q, view)}</span>
               </h1>

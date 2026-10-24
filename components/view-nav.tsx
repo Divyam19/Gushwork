@@ -34,11 +34,12 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
   const { stats } = q;
   const total = stats.overdue + stats.dueToday + stats.sentToday;
   const href = (v: ViewId) => `/?${[rep && `rep=${rep.id}`, `view=${v}`].filter(Boolean).join('&')}`;
-  // `contents` on phones so the tab bar can stick for the whole page; a real sidebar from md up.
+  // `contents` on phones so the segmented control can stick for the whole page; a real sidebar from md up.
   return (
     <aside className="contents md:flex md:flex-col md:gap-4 md:border-r md:border-zinc-200 md:p-4">
       {rep && (
-        <div className="anim-rise mx-3 mt-3 flex items-center gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50 p-2.5 md:m-0 md:flex-col md:items-stretch">
+        // Phones already show the selected rep in the chips, so the card is desktop-only.
+        <div className="anim-rise hidden flex-col gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50 p-2.5 md:flex">
           <div className="flex min-w-0 flex-1 items-center gap-2.5">
             <RepAvatar rep={rep} />
             <div className="min-w-0 leading-tight">
@@ -48,14 +49,34 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
           </div>
           <Link
             href={allHref}
-            className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2.5 text-xs font-semibold md:py-1.5 text-indigo-700 ring-1 ring-indigo-200 transition active:scale-95 hover:bg-indigo-100"
+            className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 transition active:scale-95 hover:bg-indigo-100"
           >
             <UsersIcon className="size-3.5" /> Show all reps
           </Link>
         </div>
       )}
       <p className="hidden px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400 md:block">Follow-ups</p>
-      <nav aria-label="Views" className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-20 flex gap-1 overflow-x-auto bg-zinc-50/90 px-3 py-2 backdrop-blur-md [scrollbar-width:none] md:static md:flex-col md:overflow-visible md:bg-transparent md:p-0 md:backdrop-blur-none">
+      <nav aria-label="Views" className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-20 bg-zinc-50/90 px-4 py-2 backdrop-blur-md md:hidden">
+        <div className="grid grid-cols-4 gap-0.5 rounded-xl bg-zinc-200/70 p-0.5">
+          {VIEWS.map((v) => {
+            const active = v.id === view;
+            const n = viewCount(q, v.id);
+            return (
+              <Link
+                key={v.id}
+                href={href(v.id)}
+                aria-current={active ? 'page' : undefined}
+                className="relative flex h-12 flex-col items-center justify-center rounded-[10px] leading-none transition-transform active:scale-[0.96]"
+              >
+                {active && <motion.span layoutId="view-seg" transition={SPRING} className="absolute inset-0 rounded-[10px] bg-white shadow-sm ring-1 ring-black/5" />}
+                <span className={cn('relative text-[17px] font-semibold tabular-nums', active ? 'text-zinc-900' : 'text-zinc-500', v.id === 'overdue' && n > 0 && 'text-rose-600')}>{n}</span>
+                <span className={cn('relative mt-1 text-[11px]', active ? 'font-semibold text-zinc-900' : 'font-medium text-zinc-500')}>{v.short}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+      <nav aria-label="Views" className="hidden flex-col gap-1 md:flex">
         {VIEWS.map((v) => {
           const active = v.id === view;
           const Icon = v.icon;
@@ -65,7 +86,7 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
               href={href(v.id)}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'relative flex shrink-0 items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-sm transition-[color,transform] active:scale-[0.97] md:px-2 md:py-1.5',
+                'relative flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-[color,transform] active:scale-[0.97]',
                 active ? 'font-semibold text-zinc-900' : 'text-zinc-600 hover:bg-zinc-100',
               )}
             >
