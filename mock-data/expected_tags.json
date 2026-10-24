@@ -1,0 +1,22 @@
+{
+  "_about": "Sanity checks for the agent. Run `npm run eval` after any change to scoring or prompts. Anchor date: 2026-10-24. Tags for L01-L12 must match exactly; follow-up dates are checked only where marked.",
+  "anchor_date": "2026-10-24",
+  "expected": [
+    { "lead_id": "L01", "tag": "Hot",  "why": "Asked final price for 2 units + Diwali delivery; buyer waiting since 22 Oct", "next_followup_date": "2026-10-22" },
+    { "lead_id": "L02", "tag": "Warm", "why": "Got quote and specs, discussing with partner", "next_followup_date": "2026-10-21" },
+    { "lead_id": "L03", "tag": "Hot",  "why": "Asked for proforma invoice, PO next week; unanswered", "next_followup_date": "2026-10-23" },
+    { "lead_id": "L04", "tag": "Cold", "why": "Said price high, ignored 2 follow-ups, 25 days silent" },
+    { "lead_id": "L05", "tag": "Warm", "why": "Liked the video, deciding in Monday meeting", "next_followup_date": "2026-10-27" },
+    { "lead_id": "L06", "tag": "Cold", "why": "Budget only in January", "next_followup_date": "2027-01-04" },
+    { "lead_id": "L07", "tag": "Hot",  "why": "Negotiating vs competitor, wants to finalise this week; waiting on us", "next_followup_date": "2026-10-21" },
+    { "lead_id": "L08", "tag": "Cold", "why": "Bought from another vendor" },
+    { "lead_id": "L09", "tag": "Hot",  "why": "Wants factory visit Monday, outlet opens 10 Nov", "next_followup_date": "2026-10-24" },
+    { "lead_id": "L10", "tag": "Hot",  "why": "Asked for trial; we promised a slot and never sent it", "next_followup_date": "2026-10-16" },
+    { "lead_id": "L11", "tag": "Warm", "why": "Liked cheaper option, reviewing video, quiet 15 days", "next_followup_date": "2026-10-12" },
+    { "lead_id": "L12", "tag": "Cold", "why": "Asked to call after monsoon, in November", "next_followup_date": "2026-11-02" },
+    { "lead_id": "L16", "tag": "Hot",  "why": "Referral asking for a live demo" },
+    { "lead_id": "L15", "tag": "Cold", "why": "Needs it next year" },
+    { "lead_id": "L17", "tag": "Cold", "why": "Not interested, has a vendor" },
+    { "lead_id": "L23", "tag": "Cold", "why": "No response to 3 calls" }
+  ]
+}

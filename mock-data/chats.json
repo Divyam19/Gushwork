@@ -1,0 +1,114 @@
+[
+  {
+    "lead_id": "L01",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-15T11:02:00+05:30", "text": "Hi, saw your pouch filling machine on IndiaMART. We pack namkeen in 200g and 500g pouches. Which model suits?" },
+      { "sender": "rep", "sent_at": "2026-10-15T11:20:00+05:30", "text": "Hello Rajesh ji! For 200-500g namkeen our PR-450 collar-type FFS is best. 35-40 pouches/min. Sharing brochure now." },
+      { "sender": "buyer", "sent_at": "2026-10-17T16:45:00+05:30", "text": "Brochure dekha. Nitrogen flushing option hai?" },
+      { "sender": "rep", "sent_at": "2026-10-17T17:02:00+05:30", "text": "Yes ji, N2 flushing is an add-on. PR-450 with N2 comes to ₹6.8 lakh + GST." },
+      { "sender": "buyer", "sent_at": "2026-10-22T10:14:00+05:30", "text": "Theek hai. We need 2 units. Final price batao for 2, and can you deliver before Diwali? Season rush hai." },
+      { "sender": "buyer", "sent_at": "2026-10-22T18:30:00+05:30", "text": "??" }
+    ]
+  },
+  {
+    "lead_id": "L02",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-14T12:10:00+05:30", "text": "Hi, we need a band sealer for spice pouches, 100g to 1kg. What is the price?" },
+      { "sender": "rep", "sent_at": "2026-10-14T12:40:00+05:30", "text": "Hello Meena ma'am, our PR-CBS770 continuous band sealer with batch coding is ₹68,000 + GST. Brochure attached." },
+      { "sender": "buyer", "sent_at": "2026-10-16T15:05:00+05:30", "text": "Can it seal 1kg pouches standing? Ours are gusseted." },
+      { "sender": "rep", "sent_at": "2026-10-16T15:30:00+05:30", "text": "Yes, with the vertical conveyor option. That is +₹9,500." },
+      { "sender": "buyer", "sent_at": "2026-10-18T11:20:00+05:30", "text": "Okay. Let me discuss with my partner and get back to you." }
+    ]
+  },
+  {
+    "lead_id": "L03",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-19T10:00:00+05:30", "text": "Hi Arjun, we met at PackEx. Need a carton sealer + strapping machine for export cartons, around 800 cartons a day." },
+      { "sender": "rep", "sent_at": "2026-10-19T10:45:00+05:30", "text": "Hi Imran bhai! PR-CS50 side-belt carton sealer ₹1,15,000 and PR-ST30 semi-auto strapping ₹58,000, both + GST. As a combo I can do ₹1,65,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-10-21T14:12:00+05:30", "text": "Combo price is ok. Will you do installation at Tiruppur and train 2 operators?" },
+      { "sender": "rep", "sent_at": "2026-10-21T14:30:00+05:30", "text": "Yes, free installation and operator training are included." },
+      { "sender": "buyer", "sent_at": "2026-10-23T17:50:00+05:30", "text": "Good. Please send the proforma invoice, we will release the PO next week." }
+    ]
+  },
+  {
+    "lead_id": "L04",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-09-18T09:30:00+05:30", "text": "Need a vacuum packing machine for paneer, 200g and 1kg blocks." },
+      { "sender": "rep", "sent_at": "2026-09-18T10:05:00+05:30", "text": "Namaste Deepak ji, our DZ-400 double chamber is ideal for paneer. ₹2,40,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-09-20T13:00:00+05:30", "text": "Bit high. Will check." },
+      { "sender": "rep", "sent_at": "2026-09-24T11:00:00+05:30", "text": "Hi Deepak ji, any update? We can include a free first-year AMC." },
+      { "sender": "rep", "sent_at": "2026-09-29T11:15:00+05:30", "text": "Hi Deepak ji, following up on the vacuum machine. Happy to arrange a demo if useful." }
+    ]
+  },
+  {
+    "lead_id": "L05",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-16T16:00:00+05:30", "text": "We need an L-sealer with shrink tunnel for medicine cartons. Speed 15-20 per minute." },
+      { "sender": "rep", "sent_at": "2026-10-16T16:35:00+05:30", "text": "Hello Anita ma'am, PR-LS45 L-sealer with ST-450 tunnel fits well. Combo ₹2,85,000 + GST. Here is a running video: packright.in/v/ls45" },
+      { "sender": "buyer", "sent_at": "2026-10-20T12:25:00+05:30", "text": "Video looks good. We will discuss it in our Monday meeting and confirm." }
+    ]
+  },
+  {
+    "lead_id": "L06",
+    "messages": [
+      { "sender": "rep", "sent_at": "2026-10-08T11:00:00+05:30", "text": "Hello Suresh ji, Rahul from PackRight Machines. We make pallet stretch wrappers for agro exporters. Would you like details?" },
+      { "sender": "buyer", "sent_at": "2026-10-09T10:20:00+05:30", "text": "Send details." },
+      { "sender": "rep", "sent_at": "2026-10-09T10:40:00+05:30", "text": "Sure ji. PR-SW2000 semi-auto stretch wrapper, ₹3,10,000 + GST. Brochure attached." },
+      { "sender": "buyer", "sent_at": "2026-10-12T18:05:00+05:30", "text": "Thanks. Budget approval only next quarter, January. Contact then." }
+    ]
+  },
+  {
+    "lead_id": "L07",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-17T10:10:00+05:30", "text": "Hi, need a vacuum machine with nitrogen flushing for cashew tins and pouches." },
+      { "sender": "rep", "sent_at": "2026-10-17T10:50:00+05:30", "text": "Hello Kavita ma'am, DZ-500 with N2 flushing is ₹3,45,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-10-19T15:30:00+05:30", "text": "Another supplier quoted ₹3,10,000 for a similar machine. Can you match?" },
+      { "sender": "rep", "sent_at": "2026-10-19T16:00:00+05:30", "text": "Let me check the best price with my manager and revert." },
+      { "sender": "buyer", "sent_at": "2026-10-21T11:45:00+05:30", "text": "Priya, any update? We need to finalise this week." }
+    ]
+  },
+  {
+    "lead_id": "L08",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-09-05T12:00:00+05:30", "text": "Strapping machine price?" },
+      { "sender": "rep", "sent_at": "2026-09-05T12:20:00+05:30", "text": "Sat Sri Akal Harpreet ji, PR-ST30 semi-auto is ₹58,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-09-14T17:40:00+05:30", "text": "We have finalised with another vendor. Thanks." }
+    ]
+  },
+  {
+    "lead_id": "L09",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-22T13:00:00+05:30", "text": "Hi, we are opening a new outlet on 10 November. Need a flow wrap machine for rusk and cookie packs." },
+      { "sender": "rep", "sent_at": "2026-10-22T13:30:00+05:30", "text": "Hello Fatima ma'am! PR-FW250 horizontal flow wrap, 40-60 packs/min, ₹4,20,000 + GST. Lead time is about 10 days." },
+      { "sender": "buyer", "sent_at": "2026-10-24T10:15:00+05:30", "text": "Can we see it running? Can I visit your factory on Monday?" }
+    ]
+  },
+  {
+    "lead_id": "L10",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-12T10:00:00+05:30", "text": "Need liquid filling + capping for 1L HDPE bottles, about 1500 a day. Product is a bit thick, like shampoo." },
+      { "sender": "rep", "sent_at": "2026-10-12T10:30:00+05:30", "text": "Hello Manoj ji, our PR-PF1000 piston filler handles viscous liquids. With capping it is ₹3,80,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-10-15T11:10:00+05:30", "text": "Can you do a trial with our sample before we order?" },
+      { "sender": "rep", "sent_at": "2026-10-15T11:25:00+05:30", "text": "Sure ji, I will confirm a trial slot and send you our factory address by tomorrow." }
+    ]
+  },
+  {
+    "lead_id": "L11",
+    "messages": [
+      { "sender": "buyer", "sent_at": "2026-10-03T14:00:00+05:30", "text": "Need pouch packing for 50g bhujia." },
+      { "sender": "rep", "sent_at": "2026-10-03T14:20:00+05:30", "text": "Hello Neha ji, PR-VF200 automatic VFFS, ₹3,90,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-10-06T12:00:00+05:30", "text": "Too expensive for us. Small unit hai. Koi chhota option?" },
+      { "sender": "rep", "sent_at": "2026-10-08T16:00:00+05:30", "text": "Yes ji, semi-auto PR-SA100 at ₹1,65,000 + GST, 15-20 pouches/min. Video: packright.in/v/sa100" },
+      { "sender": "buyer", "sent_at": "2026-10-09T19:30:00+05:30", "text": "Yeh theek lag raha hai. Video dekh ke batati hoon." }
+    ]
+  },
+  {
+    "lead_id": "L12",
+    "messages": [
+      { "sender": "rep", "sent_at": "2026-09-20T11:00:00+05:30", "text": "Hello Gopal sir, Priya from PackRight Machines. We supply automatic strapping machines for coir bales. Can I share details?" },
+      { "sender": "buyer", "sent_at": "2026-09-21T09:40:00+05:30", "text": "Send price." },
+      { "sender": "rep", "sent_at": "2026-09-21T10:00:00+05:30", "text": "PR-AS60 automatic strapping, ₹72,000 + GST." },
+      { "sender": "buyer", "sent_at": "2026-09-24T16:20:00+05:30", "text": "Not now. Call after monsoon, in November." }
+    ]
+  }
+]

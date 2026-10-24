@@ -1,0 +1,7 @@
+[
+  { "id": "rahul",  "name": "Rahul Sharma", "initials": "RS", "color": "#6366F1" },
+  { "id": "priya",  "name": "Priya Nair",   "initials": "PN", "color": "#EC4899" },
+  { "id": "arjun",  "name": "Arjun Mehta",  "initials": "AM", "color": "#14B8A6" },
+  { "id": "sneha",  "name": "Sneha Iyer",   "initials": "SI", "color": "#F59E0B" },
+  { "id": "vikram", "name": "Vikram Singh", "initials": "VS", "color": "#8B5CF6" }
+]
