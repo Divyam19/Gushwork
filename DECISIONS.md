@@ -118,3 +118,6 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-38 · Audit pass 2 fixes
 **Decision** The one-run-per-lead guard moves out of `analyzeLead` and into `POST /api/leads/[id]/analyze` (409 while a fresh run is in progress). Inside `analyzeLead` it blocked "Add chat" right after "Mark as sent". Internal callers may overlap; the later run has the newer chat and overwrites. Reseed deletes messages not in the ids it just inserted, instead of reading old ids (PostgREST caps reads at 1,000). Also: one `LeadRow` type (`MockLead` is its all-strings CSV form), `isSentToday` shared by the queue and the sheet, `WARM_AT`/`HOT_AT` exported from `score.ts` for the gauge, and a single page-level `AutoRefresh`.
+
+## D-39 · No nightly reseed
+**Decision** Removed the `vercel.json` cron. The `/api/cron/reseed` route stays as a manual, secret-protected reset (`pnpm seed` does the same locally). **Why** The nightly wipe erased reviewers' sends and edits ("Done today" emptied); persistence matters more than dates re-anchoring automatically. **Trade-off** Dates are anchored to the last seed, so reseed right before sharing. Supersedes the cron parts of D-05 and D-27.

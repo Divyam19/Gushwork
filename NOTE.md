@@ -7,7 +7,7 @@
 
 **AI tools.** Claude Code for building, OpenAI gpt-4o-mini inside the agent, Claude for planning/PRD/sample data.
 
-**Simplifications.** No auth (rep chosen via URL); one owner per lead, no reassignment; agent runs inline in the request (~3–6s) rather than a queue; analyses are pre-computed at seed and the DB is reseeded nightly so dates stay "today" (reviewer edits reset); WhatsApp is copy/paste, not integrated.
+**Simplifications.** No auth (rep chosen via URL); one owner per lead, no reassignment; agent runs inline in the request (~3–6s) rather than a queue; analyses are pre-computed at seed with dates anchored to the seed day (reseed to refresh); WhatsApp is copy/paste, not integrated.
 
 **Known gaps.** Drafts occasionally omit a `[placeholder]` where a price is needed (D-19); mobile layout and the search palette were not browser-verified before this note.
 
