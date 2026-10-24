@@ -93,18 +93,18 @@ export function DraftEditor({
           </span>
         </div>
       )}
-      <Textarea value={text} onChange={(e) => edit(e.target.value)} className="min-h-32 bg-white text-sm leading-relaxed" aria-label="Draft message" />
+      <Textarea value={text} onChange={(e) => edit(e.target.value)} className="min-h-32 bg-white leading-relaxed" aria-label="Draft message" />
       {placeholders > 0 && <PlaceholderChips items={found} />}
       <div className="flex flex-wrap items-center gap-2">
         <Tooltip>
-          <TooltipTrigger render={<span tabIndex={blocked ? 0 : -1} />}>
+          <TooltipTrigger render={<span tabIndex={blocked ? 0 : -1} className="max-sm:w-full" />}>
             <ShimmerButton
               type="button"
               disabled={blocked || busy !== null}
               onClick={send}
               background="#4f46e5"
               borderRadius="8px"
-              className="h-9 px-4 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50"
+              className="h-9 px-4 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50 max-sm:h-12 max-sm:w-full max-sm:text-base"
             >
               {busy === 'send' ? 'Sending…' : 'Mark as sent'}
             </ShimmerButton>
@@ -113,11 +113,12 @@ export function DraftEditor({
         </Tooltip>
         <Button
           variant="outline"
+          className="max-sm:h-11 max-sm:flex-1"
           onClick={() => navigator.clipboard.writeText(text).then(() => toast.success('Draft copied'), () => toast.error('Copy failed'))}
         >
           <CopyIcon /> Copy
         </Button>
-        <Button variant="ghost" disabled={busy !== null} onClick={regenerate}>
+        <Button variant="ghost" className="max-sm:h-11 max-sm:flex-1" disabled={busy !== null} onClick={regenerate}>
           <RefreshCwIcon className={busy === 'regen' ? 'animate-spin' : ''} /> {busy === 'regen' ? 'Regenerating…' : 'Regenerate'}
         </Button>
       </div>

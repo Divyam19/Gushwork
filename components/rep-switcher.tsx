@@ -29,3 +29,23 @@ export function RepSwitcher({ reps, selected, view }: { reps: MockRep[]; selecte
     </nav>
   );
 }
+
+/** Phone version: big scrollable chips with names, in the page flow (the header has no room for 44px targets). */
+export function RepChips({ reps, selected, view }: { reps: MockRep[]; selected: string | null; view: string | null }) {
+  const v = view ? `view=${view}` : '';
+  const chip = (active: boolean) =>
+    cn(
+      'flex h-10 shrink-0 items-center gap-2 rounded-full px-3.5 text-sm font-medium ring-1 transition-[background-color,color,transform] active:scale-95',
+      active ? 'bg-zinc-900 text-white ring-zinc-900' : 'bg-white text-zinc-700 ring-zinc-200',
+    );
+  return (
+    <nav aria-label="Switch rep" className="flex gap-2 overflow-x-auto px-3 pt-3 [scrollbar-width:none] md:hidden">
+      <Link href={v ? `/?${v}` : '/'} aria-current={!selected} className={chip(!selected)}>All reps</Link>
+      {reps.map((r) => (
+        <Link key={r.id} href={`/?rep=${r.id}${v ? `&${v}` : ''}`} aria-current={selected === r.id} className={cn(chip(selected === r.id), 'pl-1.5')}>
+          <RepAvatar rep={r} size="sm" /> {r.name.split(' ')[0]}
+        </Link>
+      ))}
+    </nav>
+  );
+}

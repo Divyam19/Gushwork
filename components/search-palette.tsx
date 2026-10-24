@@ -27,7 +27,7 @@ export function SearchPalette({ leads, rest }: { leads: SearchLead[]; rest: stri
 
   return (
     <>
-      <Button variant="outline" onClick={() => setOpen(true)} aria-label="Search leads">
+      <Button variant="outline" className="max-sm:size-10" onClick={() => setOpen(true)} aria-label="Search leads">
         <SearchIcon /> <span className="hidden sm:inline">Search</span>
         <kbd className="hidden rounded bg-zinc-100 px-1.5 text-[10px] text-muted-foreground sm:inline">⌘K</kbd>
       </Button>

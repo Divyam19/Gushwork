@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Header } from '@/components/header';
 import { LeadTable } from '@/components/lead-list';
 import { Skeleton } from '@/components/ui/skeleton';
+import { RepChips } from '@/components/rep-switcher';
 import { ViewNav } from '@/components/view-nav';
 import { VIEWS, viewCount, type ViewId } from '@/components/views';
 import { greetingIST, longDateIST, todayIST } from '@/lib/dates';
@@ -37,8 +38,9 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
     <>
       <Header reps={reps} rep={rep} view={viewParam} rest={rest} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
       <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[236px_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)]">
+        <RepChips reps={reps} selected={rep} view={viewParam} />
         <ViewNav q={q} view={view} rep={reps.find((r) => r.id === rep)} allHref={viewParam ? `/?view=${viewParam}` : '/'} />
-        <section className="flex min-h-0 flex-col gap-3 p-3 md:p-5">
+        <section className="flex min-h-0 flex-col gap-3 p-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] md:p-5">
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
               <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight text-zinc-900">
@@ -47,7 +49,7 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
               </h1>
               <p className="text-xs text-zinc-500">{HINT[view]}</p>
             </div>
-            <p className="text-xs text-zinc-500">{greetingIST()}{who ? `, ${who}` : ''} · {longDateIST()}</p>
+            <p className="hidden text-xs text-zinc-500 sm:block">{greetingIST()}{who ? `, ${who}` : ''} · {longDateIST()}</p>
           </div>
           <LeadTable q={q} view={view} ctx={{ reps, today, rest, mostUrgentId: q.mostUrgentId }} />
         </section>

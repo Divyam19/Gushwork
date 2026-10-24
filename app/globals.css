@@ -147,6 +147,12 @@
   }
   html {
     @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Phones: no 300ms tap delay or grey tap flash; press feedback comes from our own :active styles. */
+  a, button, summary, [role='button'] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 /* ---- Motion ---------------------------------------------------------

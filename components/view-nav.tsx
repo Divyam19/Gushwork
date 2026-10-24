@@ -34,10 +34,11 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
   const { stats } = q;
   const total = stats.overdue + stats.dueToday + stats.sentToday;
   const href = (v: ViewId) => `/?${[rep && `rep=${rep.id}`, `view=${v}`].filter(Boolean).join('&')}`;
+  // `contents` on phones so the tab bar can stick for the whole page; a real sidebar from md up.
   return (
-    <aside className="flex flex-col gap-4 border-zinc-200 p-3 md:border-r md:p-4">
+    <aside className="contents md:flex md:flex-col md:gap-4 md:border-r md:border-zinc-200 md:p-4">
       {rep && (
-        <div className="anim-rise flex items-center gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50 p-2.5 md:flex-col md:items-stretch">
+        <div className="anim-rise mx-3 mt-3 flex items-center gap-2.5 rounded-xl border border-indigo-200 bg-indigo-50 p-2.5 md:m-0 md:flex-col md:items-stretch">
           <div className="flex min-w-0 flex-1 items-center gap-2.5">
             <RepAvatar rep={rep} />
             <div className="min-w-0 leading-tight">
@@ -47,14 +48,14 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
           </div>
           <Link
             href={allHref}
-            className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200 transition active:scale-95 hover:bg-indigo-100"
+            className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2.5 text-xs font-semibold md:py-1.5 text-indigo-700 ring-1 ring-indigo-200 transition active:scale-95 hover:bg-indigo-100"
           >
             <UsersIcon className="size-3.5" /> Show all reps
           </Link>
         </div>
       )}
       <p className="hidden px-2 text-[11px] font-semibold uppercase tracking-wider text-zinc-400 md:block">Follow-ups</p>
-      <nav aria-label="Views" className="-mx-1 flex gap-1 overflow-x-auto px-1 [scrollbar-width:none] md:mx-0 md:flex-col md:overflow-visible md:px-0">
+      <nav aria-label="Views" className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-20 flex gap-1 overflow-x-auto bg-zinc-50/90 px-3 py-2 backdrop-blur-md [scrollbar-width:none] md:static md:flex-col md:overflow-visible md:bg-transparent md:p-0 md:backdrop-blur-none">
         {VIEWS.map((v) => {
           const active = v.id === view;
           const Icon = v.icon;
@@ -64,7 +65,7 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
               href={href(v.id)}
               aria-current={active ? 'page' : undefined}
               className={cn(
-                'relative flex shrink-0 items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-[color,transform] active:scale-[0.97]',
+                'relative flex shrink-0 items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-sm transition-[color,transform] active:scale-[0.97] md:px-2 md:py-1.5',
                 active ? 'font-semibold text-zinc-900' : 'text-zinc-600 hover:bg-zinc-100',
               )}
             >

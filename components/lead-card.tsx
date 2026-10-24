@@ -35,7 +35,7 @@ export function LeadCard({
       style={{ '--i': Math.min(index, 14) } as React.CSSProperties}
       className={cn(
         COLS,
-        'anim-rise relative px-4 py-2.5 text-sm transition-[background-color,transform] duration-200 hover:bg-indigo-50/50 active:scale-[0.995] active:bg-indigo-50',
+        'anim-rise relative px-4 py-3 text-sm md:py-2.5 transition-[background-color,transform] duration-200 hover:bg-indigo-50/50 active:scale-[0.995] active:bg-indigo-50',
         'before:absolute before:inset-y-1.5 before:left-0 before:w-[3px] before:origin-center before:scale-y-0 before:rounded-r-full before:bg-indigo-500 before:transition-transform before:duration-300 before:ease-[var(--ease-out-expo)] hover:before:scale-y-100',
         'focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
         faded && 'opacity-70',
@@ -46,9 +46,9 @@ export function LeadCard({
           {initials(item.name)}
         </span>
         <span className="min-w-0">
-          <span className="block truncate font-semibold text-zinc-900">{item.name}</span>
+          <span className="block truncate font-semibold text-zinc-900">{item.name}<span className="sr-only"> ({a.tag})</span></span>
           <span className="block truncate text-xs text-zinc-500">{item.company}</span>
-          <span className="block truncate text-xs text-zinc-500 md:hidden">{reason}</span>
+          <span className="line-clamp-2 text-xs text-zinc-500 md:hidden">{reason}</span>
         </span>
       </span>
       <span className="hidden md:block">

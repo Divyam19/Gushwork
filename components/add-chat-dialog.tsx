@@ -56,10 +56,10 @@ export function AddChatDialog({ leadId, repFirstName, prevTag }: { leadId: strin
 
   return (
     <Dialog open={open} onOpenChange={(o) => !busy && setOpen(o)}>
-      <DialogTrigger render={<Button variant="outline" className="w-full" />}>
+      <DialogTrigger render={<Button variant="outline" className="w-full max-sm:h-11" />}>
         <MessageSquarePlusIcon /> Add chat
       </DialogTrigger>
-      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
+      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg max-sm:[&_input]:h-11 max-sm:[&_select]:h-11 max-sm:[&_textarea]:text-base max-sm:[&_summary]:py-2.5 max-sm:[&_button:not([data-slot=dialog-close])]:h-11">
         <DialogHeader>
           <DialogTitle>Add chat</DialogTitle>
           <DialogDescription>New messages trigger a fresh analysis.</DialogDescription>

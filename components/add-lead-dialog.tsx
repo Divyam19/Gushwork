@@ -14,7 +14,7 @@ import { parseWhatsApp } from '@/lib/whatsapp-parser';
 
 const SOURCES = ['IndiaMART', 'Website', 'Trade Show', 'Referral', 'Cold Call', 'WhatsApp'];
 export const selectClass =
-  'h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50';
+  'h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-base md:text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50';
 
 export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | null }) {
   const router = useRouter();
@@ -58,10 +58,10 @@ export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | nu
 
   return (
     <Dialog open={open} onOpenChange={(o) => !busy && setOpen(o)}>
-      <DialogTrigger render={<Button aria-label="Add lead" />}>
+      <DialogTrigger render={<Button aria-label="Add lead" className="max-sm:size-10" />}>
         <PlusIcon /> <span className="hidden sm:inline">Add lead</span>
       </DialogTrigger>
-      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
+      <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg max-sm:[&_input]:h-11 max-sm:[&_select]:h-11 max-sm:[&_textarea]:text-base max-sm:[&_summary]:py-2.5 max-sm:[&_button:not([data-slot=dialog-close])]:h-11">
         <DialogHeader>
           <DialogTitle>Add lead</DialogTitle>
           <DialogDescription>The agent will tag it and draft a follow-up.</DialogDescription>

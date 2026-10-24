@@ -111,7 +111,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && close()} onOpenChangeComplete={(o) => !o && router.push(closeHref, { scroll: false })}>
-      <SheetContent className="w-full gap-0 bg-zinc-50 p-0 data-[side=right]:sm:max-w-[560px]">
+      <SheetContent className="gap-0 bg-zinc-50 p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[560px]">
         {analyzing && <AutoRefresh />}
 
         <div className={cn('anim-fade flex flex-col gap-4 border-b bg-gradient-to-b p-5 pr-12', theme?.hero ?? 'from-zinc-100 to-white')}>
@@ -132,7 +132,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
           </div>
           <SheetDescription className="flex flex-wrap items-center gap-1.5 text-xs text-zinc-700">
             <button
-              className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 ring-1 ring-zinc-200 transition hover:bg-white hover:ring-zinc-300"
+              className="inline-flex items-center gap-1 rounded-full bg-white/80 px-3 py-1 ring-1 ring-zinc-200 transition hover:bg-white hover:ring-zinc-300 active:scale-95 max-sm:py-2.5"
               onClick={() => navigator.clipboard.writeText(lead.phone).then(() => toast.success('Phone copied'))}
               title="Copy phone"
             >
@@ -165,7 +165,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
                   title="Why now"
                   className="border-zinc-200 bg-white pl-5"
                   aside={
-                    <span className={cn('rounded-full px-2 py-0.5 text-xs font-medium', due?.overdue ? 'bg-red-50 text-red-700 ring-1 ring-red-200' : 'bg-zinc-100 text-zinc-700')}>
+                    <span className={cn('rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap', due?.overdue ? 'bg-red-50 text-red-700 ring-1 ring-red-200' : 'bg-zinc-100 text-zinc-700')}>
                       {due?.text === dayLabel(a.next_followup_date) ? due.text : `${dayLabel(a.next_followup_date)} · ${due?.text}`}
                     </span>
                   }
@@ -223,7 +223,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
           </div>
         </ScrollArea>
 
-        <div className="border-t bg-white p-3">
+        <div className="border-t bg-white p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           <AddChatDialog leadId={lead.id} repFirstName={rep?.name.split(' ')[0] ?? ''} prevTag={a?.tag ?? null} />
         </div>
       </SheetContent>
