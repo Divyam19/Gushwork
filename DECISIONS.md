@@ -58,3 +58,9 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 ## D-18 · Extraction stays on gpt-4o-mini; fixed via prompt, not model upgrade
 **Decision** First eval was 12/16 tags, 8/10 dates (L02/L05 "discuss with partner" misread as deferred; L10/L16 trial/demo not marked strong_intent; L11 "video dekh ke batati hoon" marked open_request). Tightened EXTRACT_SYSTEM (deferred hard rule, strong_intent covers trial/demo incl. notes, open_request covers any direct request) and added few-shot examples 3-7. Now 16/16 tags, 10/10 dates on 3 consecutive runs.
 **Caveat** Examples 5-7 are modelled on eval leads L16/L02/L03 (paraphrased, not copied), so the eval is partly in-sample. Validate on unseen chats in Phase 5/7.
+
+## D-19 · Write step gets explicit "who owes what" context
+**Decision** `write.ts` passes the rep's pending promise, the buyer's open request and a REQUIRED directive (deliver what we owe with a [placeholder]) into the user message. **Why** gpt-4o-mini otherwise repeated the rep's own promise ("I'll confirm the slot") or invented delivery ability ("We can deliver before Diwali"). **Known gap** L10 still gives no placeholder for the trial slot; acceptable, revisit if time.
+
+## D-20 · analyzeLead cannot store an error row for a never-analysed lead
+**Decision** `analyses` columns are NOT NULL, so on failure `status='error'` is stored only when a previous analysis exists; otherwise the error is thrown to the caller. **Why** avoids schema change; seeding pre-analyses every lead, so new leads (Phase 5) must handle the throw in the API route.

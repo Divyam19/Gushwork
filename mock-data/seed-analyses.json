@@ -1,0 +1,1218 @@
+{
+  "anchor": "2026-10-24",
+  "model": "gpt-4o-mini",
+  "leads": {
+    "L03": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Please send the proforma invoice"
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Need a carton sealer + strapping machine for export cartons"
+        },
+        "open_request": {
+          "value": true,
+          "evidence": "Please send the proforma invoice"
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": true,
+          "evidence": "release the PO next week"
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Waiting on us for the proforma invoice to release the PO next week.",
+      "draft": "Hi Imran bhai,\n\nSorry for the delay! Here’s the proforma invoice for the carton sealer and strapping machine. Please check and let me know if everything looks good.\n\nLooking forward to your PO!\n\nArjun"
+    },
+    "L02": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "we need a band sealer for spice pouches, 100g to 1kg."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Discussing with partner about the band sealer options - waiting on them.",
+      "draft": "Hi Meena ma'am, hope you're doing well! Just checking in to see if you had a chance to discuss the band sealer with your partner. Let me know if you need any more details or if you’d like to set up a quick call. \n\nThanks! \nPriya"
+    },
+    "L04": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Need a vacuum packing machine for paneer, 200g and 1kg blocks."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": true,
+          "evidence": "Happy to arrange a demo if useful."
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": true,
+          "evidence": "Bit high. Will check."
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "We owe a demo arrangement - promised 25 days ago.",
+      "draft": "Hi Deepak ji, sorry for the delay. We can arrange a demo for the DZ-400 vacuum packing machine at your convenience. Please let me know a suitable date and time. Looking forward to your response! \n\nSneha"
+    },
+    "L01": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Final price batao for 2, and can you deliver before Diwali?"
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Which model suits?"
+        },
+        "open_request": {
+          "value": true,
+          "evidence": "??"
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": true,
+          "evidence": "can you deliver before Diwali? Season rush hai."
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "hinglish"
+      },
+      "reason": "Asked final price for 2 units and delivery before Diwali - waiting on us 2 days.",
+      "draft": "Sorry for the delay, Rajesh ji. Final price for 2 units is [best price]. Delivery before Diwali: [delivery date]. Can you confirm a slot for a quick call today to discuss further? \n\nRahul"
+    },
+    "L05": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "We need an L-sealer with shrink tunnel for medicine cartons."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": {
+          "kind": "weekday",
+          "value": "monday",
+          "ref_date": "2026-10-20"
+        },
+        "language": "english"
+      },
+      "reason": "Buyer discussed machine in meeting, waiting to confirm order after Monday.",
+      "draft": "Hi Anita ma'am,\nHope your meeting went well! Just checking in to see if you have any updates on the L-sealer with shrink tunnel. Let me know if you need any more info or if we can schedule a call to discuss.\nLooking forward to your response.\n\nVikram"
+    },
+    "L06": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Send details."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": true,
+          "evidence": "Budget approval only next quarter, January."
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": {
+          "kind": "month",
+          "value": "january",
+          "ref_date": "2026-10-12"
+        },
+        "language": "english"
+      },
+      "reason": "Budget approval only next quarter, waiting until January to reconnect.",
+      "draft": "Hi Suresh ji,\n\nThanks for your patience! Just checking in to see if you need any more info on the PR-SW2000 before your budget approval in January. Let me know if it's okay to follow up then.\n\nBest,\nRahul"
+    },
+    "L07": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "need a vacuum machine with nitrogen flushing"
+        },
+        "open_request": {
+          "value": true,
+          "evidence": "any update?"
+        },
+        "rep_promise_pending": {
+          "value": true,
+          "evidence": "check the best price with my manager and revert"
+        },
+        "time_pressure": {
+          "value": true,
+          "evidence": "We need to finalise this week"
+        },
+        "price_objection_unresolved": {
+          "value": true,
+          "evidence": "Another supplier quoted ₹3,10,000"
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "We owe the best price - promised 3 days ago.",
+      "draft": "Sorry for the delay, Kavita ma'am. The best price I can offer for the DZ-500 with N2 flushing is [best price]. We need to finalize this week, so please let me know if this works for you. Can we confirm a slot for a quick call today? \n\nPriya"
+    },
+    "L08": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Strapping machine price?"
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": true,
+          "evidence": "We have finalised with another vendor."
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Buyer has finalized with another vendor - checking back after 40 days.",
+      "draft": "Sat Sri Akal Harpreet ji,\nHope you're doing well! Just wanted to check in regarding the strapping machine. If you need any information or if there's anything we can assist with, please let me know. Is it okay to follow up again in a few weeks?\n\nArjun"
+    },
+    "L09": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Can I visit your factory on Monday?"
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Need a flow wrap machine for rusk and cookie packs."
+        },
+        "open_request": {
+          "value": true,
+          "evidence": "Can I visit your factory on Monday?"
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": true,
+          "evidence": "opening a new outlet on 10 November."
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Fatima ma'am wants to visit our factory on Monday to see the machine.",
+      "draft": "Hi Fatima ma'am,\n\nYes, you can definitely visit our factory on Monday! What time works best for you? Looking forward to showing you the PR-FW250 in action.\n\nSneha"
+    },
+    "L10": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Can you do a trial with our sample before we order?"
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Need liquid filling + capping for 1L HDPE bottles, about 1500 a day."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": true,
+          "evidence": "I will confirm a trial slot and send you our factory address by tomorrow."
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "We owe a trial slot - promised 8 days ago.",
+      "draft": "Hello Manoj ji,\n\nSorry for the delay. We can schedule a trial for the PR-PF1000 with your sample. Please confirm a suitable date for the trial slot, and I’ll send our factory address. \n\nLooking forward to your reply.\n\nVikram"
+    },
+    "L11": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Need pouch packing for 50g bhujia."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "hinglish"
+      },
+      "reason": "Last contact was 15 days ago; buyer showed interest in semi-auto machine.",
+      "draft": "Hi Neha ji, hope you're doing well! Just checking in to see if you had a chance to watch the video of the PR-SA100. Let me know if you have any questions or if you’d like to discuss further. \n\nLooking forward to your thoughts! \nRahul"
+    },
+    "L12": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Send price."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": true,
+          "evidence": "Call after monsoon, in November."
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": {
+          "kind": "month",
+          "value": "november",
+          "ref_date": "2026-09-24"
+        },
+        "language": "english"
+      },
+      "reason": "Buyer requested to call after monsoon, following up in November.",
+      "draft": "Hi Gopal ji,\n\nI hope you're doing well! Just checking in as we agreed to connect in November. If you need any info about the PR-AS60 strapping machine, feel free to ask.\n\nShall I confirm a time for our call next week?\n\nPriya"
+    },
+    "L15": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": true,
+          "evidence": "will need a shrink tunnel next year, not now"
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Interested in a shrink tunnel but planning to buy next year.",
+      "draft": "Hi Ravi ji,\nHope you’re doing well! Just wanted to touch base regarding the shrink tunnel you mentioned. If it’s okay, I can check back with you closer to your buying timeline next year. \nLet me know! \n\nVikram"
+    },
+    "L13": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "asked for price."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "asked for price."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked for price for 2 carton sealers - waiting on us 1 day.",
+      "draft": "Hi Sanjay ji,\n\nSorry for the delay! The price for 2 carton sealers is [best price]. Please let me know if you need any more details or if you’d like to confirm the order.\n\nThanks,\nArjun"
+    },
+    "L14": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Asked for brochure for a single-chamber vacuum packer."
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Asked for brochure for a single-chamber vacuum packer."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked for brochure for single-chamber vacuum packer - waiting on us 5 days.",
+      "draft": "Hi Pooja ji,\n\nSorry for the delay! Here’s the brochure for the single-chamber vacuum packer you requested. Let me know if you have any questions or need more info.\n\nCan we schedule a quick call to discuss further?\n\nSneha"
+    },
+    "L16": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Wants a live demo of the shrink wrapper"
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Wants a live demo of the shrink wrapper"
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Wants a live demo of the shrink wrapper at their Baddi plant - waiting on us 3 days.",
+      "draft": "Hi Amit ji,\n\nSorry for the delay! I wanted to confirm a date for the live demo of the shrink wrapping machine at your Baddi plant. Can we schedule it for this week? \n\nLooking forward to your reply.\n\nRahul"
+    },
+    "L17": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": true,
+          "evidence": "not interested, already have a vendor."
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Not interested as already have a vendor - last contact 45 days ago.",
+      "draft": "Hi Lakshmi ji,\n\nI understand you’re currently set with a vendor for strapping machines. Just wanted to check if it’s okay to follow up in the future. \n\nThanks!  \nPriya"
+    },
+    "L20": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "General enquiry about carton sealers - no details shared yet.",
+      "draft": "Hi Arvind ji,\n\nHope you’re doing well! I wanted to check in regarding your interest in carton sealers. If you have any specific requirements or questions, feel free to share. \n\nIs it okay if I follow up again next week?\n\nBest,\nVikram"
+    },
+    "L18": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Asked price for semi-auto stretch wrapper, ~4 pallets/hour."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Asked price for semi-auto stretch wrapper, ~4 pallets/hour."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked price for semi-auto stretch wrapper, ~4 pallets/hour - waiting on us 8 days.",
+      "draft": "Hi Rohit ji,\n\nSorry for the delay! Here’s the price for the semi-auto stretch wrapper: [best price]. \nLet me know if you’d like to discuss further or if you need any more details.\n\nLooking forward to your response.\n\nArjun"
+    },
+    "L19": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Asked for running video and price of double-chamber vacuum machine."
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Asked for running video and price of double-chamber vacuum machine."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked for running video and price of double-chamber vacuum machine - waiting on us 2 days.",
+      "draft": "Hi Divya ji,\n\nSorry for the delay! Here’s the running video of the double-chamber vacuum machine you requested. The price is [best price]. \n\nCould you confirm a time for a quick call today to discuss further?\n\nSneha"
+    },
+    "L21": {
+      "signals": {
+        "strong_intent": {
+          "value": true,
+          "evidence": "Asked band sealer price and fastest delivery."
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": true,
+          "evidence": "Diwali rush."
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Asked band sealer price and fastest delivery."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked band sealer price and fastest delivery for Diwali rush - waiting on us 6 days.",
+      "draft": "Hi Shalini ji,\n\nSorry for the delay! The price for the band sealer is [best price] and we can deliver by [delivery date]. \n\nCan you confirm if you'd like to proceed?\n\nRahul"
+    },
+    "L22": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": true,
+          "evidence": "Will discuss strapping requirement with his father and revert."
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Will discuss strapping requirement with his father and revert."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Waiting on Nikhil to discuss strapping machine with his father.",
+      "draft": "Hi Nikhil ji,\nHope you're doing well! Just checking in to see if you had a chance to discuss the strapping machine with your father. Let me know if you need any more information or if you’d like to set up a call.\n\nBest,\nPriya"
+    },
+    "L24": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Asked for capacity and specs."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Asked for capacity and specs."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked for capacity and specs for pouch packing machine - waiting on us 4 days.",
+      "draft": "Hi Ritu ji,\n\nSorry for the delay! The pouch packing machine for 250g tea packs has a capacity of [capacity details]. Let me know if you need more specs or have any other questions.\n\nCan we schedule a quick call today to discuss further?\n\nSneha"
+    },
+    "L23": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": false,
+          "evidence": null
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "ghosted_no_chat": {
+          "value": true,
+          "evidence": "No response to 3 calls since."
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "No response to 3 calls in 35 days - lead is cold now.",
+      "draft": "Hi Farhan ji,\n\nI hope you’re doing well. Just wanted to check in regarding your interest in the shrink wrapping machine. If you have any questions or need more info, feel free to ask. Is it okay if I check back in a few days?\n\nBest,\nArjun"
+    },
+    "L25": {
+      "signals": {
+        "strong_intent": {
+          "value": false,
+          "evidence": null
+        },
+        "medium_intent": {
+          "value": true,
+          "evidence": "Asked induction sealer price."
+        },
+        "open_request": {
+          "value": false,
+          "evidence": null
+        },
+        "rep_promise_pending": {
+          "value": false,
+          "evidence": null
+        },
+        "time_pressure": {
+          "value": false,
+          "evidence": null
+        },
+        "price_objection_unresolved": {
+          "value": true,
+          "evidence": "Said budget is tight right now."
+        },
+        "deferred": {
+          "value": false,
+          "evidence": null
+        },
+        "lost": {
+          "value": false,
+          "evidence": null
+        },
+        "buyer_waiting_no_chat": {
+          "value": true,
+          "evidence": "Asked induction sealer price."
+        },
+        "ghosted_no_chat": {
+          "value": false,
+          "evidence": null
+        },
+        "explicit_followup": null,
+        "language": "english"
+      },
+      "reason": "Asked induction sealer price but has a tight budget - waiting on us 14 days.",
+      "draft": "Hi Kiran ji,\n\nSorry for the delay! The price for the induction cap sealer is [best price]. Let me know if this works for your budget or if you have any questions.\n\nCan we confirm a slot for a quick call today?\n\nVikram"
+    }
+  }
+}
