@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { api } from '@/lib/api-client';
 import type { Message } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import { parseWhatsApp } from '@/lib/whatsapp-parser';
@@ -25,13 +26,7 @@ export function AddChatDialog({ leadId, repFirstName, prevTag }: { leadId: strin
   async function save() {
     setBusy(true);
     try {
-      const res = await fetch(`/api/leads/${leadId}/messages`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ messages }),
-      });
-      const data = (await res.json().catch(() => ({}))) as { tag?: string; error?: string };
-      if (!res.ok) throw new Error(data.error ?? 'Could not add chat');
+      const data = await api<{ tag?: string }>(`/api/leads/${leadId}/messages`, { method: 'POST', body: JSON.stringify({ messages }) });
       toast.success(data.tag && prevTag && data.tag !== prevTag ? `Re-analysed: ${prevTag} → ${data.tag}` : 'Chat added · re-analysed');
       setOpen(false);
       setText('');

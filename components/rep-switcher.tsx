@@ -3,10 +3,10 @@
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { RepAvatar } from '@/components/rep-avatar';
-import type { MockRep } from '@/lib/mock';
+import type { Rep } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 
-export function RepSwitcher({ reps, selected, view }: { reps: MockRep[]; selected: string | null; view: string | null }) {
+export function RepSwitcher({ reps, selected, view }: { reps: Rep[]; selected: string | null; view: string | null }) {
   const v = view ? `view=${view}` : '';
   const item = (active: boolean) =>
     cn(
@@ -31,7 +31,7 @@ export function RepSwitcher({ reps, selected, view }: { reps: MockRep[]; selecte
 }
 
 /** Phone version: scrollable chips with names, in the page flow. 36px visually; the ::after pads the tap area to 44px. */
-export function RepChips({ reps, selected, view }: { reps: MockRep[]; selected: string | null; view: string | null }) {
+export function RepChips({ reps, selected, view }: { reps: Rep[]; selected: string | null; view: string | null }) {
   const v = view ? `view=${view}` : '';
   const chip = (active: boolean) =>
     cn(

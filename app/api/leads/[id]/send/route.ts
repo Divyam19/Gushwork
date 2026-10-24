@@ -15,15 +15,19 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const sb = db();
   const now = new Date();
 
-  const { data: a } = await sb.from('analyses').select('lead_id').eq('lead_id', id).maybeSingle();
+  const { data: a } = await sb.from('analyses').select('lead_id,draft,draft_status').eq('lead_id', id).maybeSingle();
   if (!a) return Response.json({ error: 'Not found' }, { status: 404 });
+  // A retried or double-fired request must not log the same message twice.
+  if (a.draft_status === 'sent' && a.draft === body.data.draft) return Response.json({ ok: true, duplicate: true });
 
   const { error: mErr } = await sb.from('messages').insert({ lead_id: id, sender: 'rep', text: body.data.draft, sent_at: now.toISOString() });
   if (mErr) return Response.json({ error: mErr.message }, { status: 500 });
-  await Promise.all([
+  const results = await Promise.all([
     sb.from('analyses').update({ draft: body.data.draft, draft_status: 'sent', sent_at: now.toISOString(), pending_draft: null }).eq('lead_id', id),
     sb.from('leads').update({ last_contact_date: istDate(now) }).eq('id', id),
   ]);
+  const failed = results.find((r) => r.error);
+  if (failed?.error) return Response.json({ error: failed.error.message }, { status: 500 });
 
   after(() => analyzeLead(id).catch((e) => console.error('post-send analysis failed', id, e)));
   return Response.json({ ok: true });

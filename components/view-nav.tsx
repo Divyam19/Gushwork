@@ -4,7 +4,7 @@ import { FlameIcon, UsersIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 import { RepAvatar } from '@/components/rep-avatar';
-import type { MockRep } from '@/lib/mock';
+import type { Rep } from '@/lib/schemas';
 import type { Queue } from '@/lib/queue';
 import { VIEWS, viewCount, type ViewId } from '@/components/views';
 import { cn } from '@/lib/utils';
@@ -30,7 +30,7 @@ function Ring({ done, total }: { done: number; total: number }) {
   );
 }
 
-export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep?: MockRep; allHref: string }) {
+export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep?: Rep; allHref: string }) {
   const { stats } = q;
   const total = stats.overdue + stats.dueToday + stats.sentToday;
   const href = (v: ViewId) => `/?${[rep && `rep=${rep.id}`, `view=${v}`].filter(Boolean).join('&')}`;

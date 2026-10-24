@@ -70,20 +70,32 @@ export async function seedDatabase(opts: { refresh?: boolean; log?: (s: string) 
       lead_id: l.id, tag: r.tag, score: r.score, signals: { ...signals, computed: r.computed },
       reason: fx.reason, next_followup_date: next, draft: fx.draft, draft_status: 'pending',
       status: 'ready', model: fixture.model,
+      // Upsert only touches the columns given, so reset the ones a reviewer's edits may have set.
+      sent_at: null, pending_draft: null, error: null, analyzed_at: new Date().toISOString(),
     });
     summary.push(`${l.id.padEnd(4)} ${r.tag.padEnd(5)} ${String(r.score).padStart(4)}  ${next}`);
   }
 
+  // Replace without ever emptying the tables: write the new data first, then remove what it supersedes.
+  // A failure part-way leaves old and new data mixed, never a blank dashboard.
   const sb = db();
-  for (const t of ['analyses', 'messages', 'leads', 'reps'] as const) {
-    const col = t === 'analyses' || t === 'messages' ? 'lead_id' : 'id';
-    const { error } = await sb.from(t).delete().neq(col, '__none__');
-    if (error) throw new Error(`delete ${t}: ${error.message}`);
+  const must = (what: string, error: { message: string } | null) => {
+    if (error) throw new Error(`${what}: ${error.message}`);
+  };
+  const { data: oldMsgs, error: oldErr } = await sb.from('messages').select('id');
+  must('read messages', oldErr);
+
+  must('upsert reps', (await sb.from('reps').upsert(reps)).error);
+  must('upsert leads', (await sb.from('leads').upsert(leadRows)).error);
+  must('insert messages', (await sb.from('messages').insert(msgRows)).error);
+  const oldIds = (oldMsgs ?? []).map((m) => m.id as string);
+  for (let i = 0; i < oldIds.length; i += 100) {
+    must('delete old messages', (await sb.from('messages').delete().in('id', oldIds.slice(i, i + 100))).error);
   }
-  for (const [t, rows] of [['reps', reps], ['leads', leadRows], ['messages', msgRows], ['analyses', analysisRows]] as const) {
-    const { error } = await sb.from(t).insert(rows as never[]);
-    if (error) throw new Error(`insert ${t}: ${error.message}`);
-  }
+  must('upsert analyses', (await sb.from('analyses').upsert(analysisRows)).error);
+  // Leads added by reviewers (and their messages/analyses, via cascade) go; so do reps no longer in the seed.
+  must('delete extra leads', (await sb.from('leads').delete().not('id', 'in', `(${leadRows.map((l) => l.id).join(',')})`)).error);
+  must('delete extra reps', (await sb.from('reps').delete().not('id', 'in', `(${reps.map((r) => r.id).join(',')})`)).error);
   log(`lead tag score next\n${summary.join('\n')}`);
   return { today, shift, leads: leadRows.length };
 }

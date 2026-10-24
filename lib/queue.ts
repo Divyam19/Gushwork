@@ -1,5 +1,5 @@
 import { addDays, dayLabel, diffDays, istDate } from './dates';
-import type { Tag } from './schemas';
+import type { AnalysisRow, Tag } from './schemas';
 
 export interface QueueItem {
   id: string;
@@ -11,16 +11,7 @@ export interface QueueItem {
   rep_id: string;
   product_interest: string | null;
   last_contact_date: string;
-  analysis: {
-    tag: Tag;
-    score: number;
-    reason: string;
-    next_followup_date: string;
-    draft_status: 'pending' | 'sent';
-    sent_at: string | null;
-    status: 'ready' | 'analyzing' | 'error';
-    error: string | null;
-  } | null;
+  analysis: Pick<AnalysisRow, 'tag' | 'score' | 'reason' | 'next_followup_date' | 'draft_status' | 'sent_at' | 'status' | 'error'> | null;
 }
 
 export interface Queue {

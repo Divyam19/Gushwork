@@ -1,11 +1,11 @@
 import { COLS, LeadCard } from '@/components/lead-card';
 import { dayLabel } from '@/lib/dates';
-import type { MockRep } from '@/lib/mock';
+import type { Rep } from '@/lib/schemas';
 import type { Queue, QueueItem } from '@/lib/queue';
 import type { ViewId } from '@/components/views';
 import { cn } from '@/lib/utils';
 
-interface Ctx { reps: MockRep[]; today: string; rest: string; mostUrgentId: string | null }
+interface Ctx { reps: Rep[]; today: string; rest: string; mostUrgentId: string | null }
 
 function Rows({ items, ctx, faded }: { items: QueueItem[]; ctx: Ctx; faded?: boolean }) {
   return items.map((i, n) => (

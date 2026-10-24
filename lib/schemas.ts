@@ -28,6 +28,33 @@ export type Signals = z.infer<typeof Signals>;
 
 export type Tag = 'Hot' | 'Warm' | 'Cold';
 export type Sender = 'rep' | 'buyer';
+export type AnalysisStatus = 'ready' | 'analyzing' | 'error';
+export type DraftStatus = 'pending' | 'sent';
+
+export interface Rep { id: string; name: string; initials: string; color: string }
+
+/** One row of `analyses`, minus the heavy `signals` blob. Queue and detail views each Pick what they need. */
+export interface AnalysisRow {
+  tag: Tag;
+  score: number;
+  reason: string;
+  next_followup_date: string;
+  draft: string;
+  draft_status: DraftStatus;
+  sent_at: string | null;
+  pending_draft: string | null;
+  status: AnalysisStatus;
+  error: string | null;
+  analyzed_at: string | null;
+}
+
+/** One message in a request body. `sent_at` defaults to now. Shared by every route that accepts chat. */
+export const MessageInput = z.object({
+  sender: z.enum(['rep', 'buyer']),
+  text: z.string().min(1).max(4000),
+  sent_at: z.iso.datetime({ offset: true }).optional(),
+});
+export type MessageInput = z.infer<typeof MessageInput>;
 export interface Message {
   sender: Sender;
   text: string;

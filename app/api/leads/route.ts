@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { analyzeLead } from '@/lib/agent/run';
 import { db } from '@/lib/db';
 import { istDate, todayIST } from '@/lib/dates';
+import { latestSentAt, toMessageRows } from '@/lib/messages';
+import { MessageInput } from '@/lib/schemas';
 
 export const maxDuration = 30;
 
@@ -14,11 +16,7 @@ const Body = z.object({
   rep_id: z.string().min(1),
   product_interest: z.string().trim().max(100).optional(),
   notes: z.string().trim().max(1000).optional(),
-  messages: z.array(z.object({
-    sender: z.enum(['rep', 'buyer']),
-    text: z.string().min(1).max(4000),
-    sent_at: z.iso.datetime({ offset: true }),
-  })).max(200).default([]),
+  messages: z.array(MessageInput).max(200).default([]),
 });
 
 export async function POST(req: Request) {
@@ -31,7 +29,8 @@ export async function POST(req: Request) {
   if (!rep) return Response.json({ error: 'Unknown rep' }, { status: 400 });
 
   const id = `N${Date.now().toString(36).toUpperCase()}`;
-  const last = messages.map((m) => m.sent_at).sort().at(-1);
+  const rows = toMessageRows(id, messages);
+  const last = latestSentAt(rows);
   const { error } = await sb.from('leads').insert({
     id,
     ...l,
@@ -41,8 +40,8 @@ export async function POST(req: Request) {
     last_contact_date: last ? istDate(last) : todayIST(),
   });
   if (error) return Response.json({ error: error.message }, { status: 500 });
-  if (messages.length) {
-    const { error: mErr } = await sb.from('messages').insert(messages.map((m) => ({ lead_id: id, ...m })));
+  if (rows.length) {
+    const { error: mErr } = await sb.from('messages').insert(rows);
     if (mErr) return Response.json({ error: mErr.message }, { status: 500 });
   }
 

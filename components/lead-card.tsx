@@ -5,7 +5,7 @@ import { TAG_THEME, initials } from '@/components/tag-theme';
 import { BorderBeam } from '@/components/ui/border-beam';
 import { Skeleton } from '@/components/ui/skeleton';
 import { dueLabel, type QueueItem } from '@/lib/queue';
-import type { MockRep } from '@/lib/mock';
+import type { Rep } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 
 // Shared by the table header and rows so columns line up.
@@ -14,7 +14,7 @@ export const COLS = 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 md
 export function LeadCard({
   item, today, rep, beam, faded, rest, index = 0,
 }: {
-  item: QueueItem; today: string; rep: MockRep | undefined; beam?: boolean; faded?: boolean; rest: string; index?: number;
+  item: QueueItem; today: string; rep: Rep | undefined; beam?: boolean; faded?: boolean; rest: string; index?: number;
 }) {
   const a = item.analysis!;
   const due = dueLabel(a.next_followup_date, today);

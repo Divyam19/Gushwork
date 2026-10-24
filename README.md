@@ -25,4 +25,4 @@ pnpm dev
 | `pnpm seed` | reset the DB from `mock-data` and the frozen analysis fixture (`--refresh` re-runs the LLM) |
 
 ## Deploy (Vercel)
-Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `SEED_ANCHOR_DATE`, `CRON_SECRET`. `vercel.json` schedules a daily reseed (00:30 IST) at `/api/cron/reseed` so the demo always looks "today"; reviewer edits reset nightly. The Supabase service key is server-only.
+Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `CRON_SECRET`. `vercel.json` schedules a daily reseed (00:30 IST) at `/api/cron/reseed` so the demo always looks "today"; reviewer edits reset nightly. The Supabase service key is server-only. The app has no login by design (D-10), so its write and LLM routes are open to anyone with the URL: turn on Vercel Deployment Protection (or share only with the reviewer) to gate it.

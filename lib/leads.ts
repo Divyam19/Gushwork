@@ -1,12 +1,16 @@
 import { db } from './db';
-import type { MockRep } from './mock';
 import type { QueueItem } from './queue';
-import type { Tag } from './schemas';
+import { effectiveStatus } from './analysis-status';
+import type { AnalysisRow, Rep, Sender } from './schemas';
 
-export async function getReps(): Promise<MockRep[]> {
+function withEffectiveStatus<T extends { status: AnalysisRow['status']; error: string | null; analyzed_at: string | null }>(a: T): T {
+  return { ...a, ...effectiveStatus(a) };
+}
+
+export async function getReps(): Promise<Rep[]> {
   const { data, error } = await db().from('reps').select('*').order('name');
   if (error) throw error;
-  return data as MockRep[];
+  return data as Rep[];
 }
 
 export async function getQueueItems(): Promise<QueueItem[]> {
@@ -14,13 +18,14 @@ export async function getQueueItems(): Promise<QueueItem[]> {
     .from('leads')
     .select(
       'id,name,company,phone,city,source,rep_id,product_interest,last_contact_date,' +
-        'analyses(tag,score,reason,next_followup_date,draft_status,sent_at,status,error)',
+        'analyses(tag,score,reason,next_followup_date,draft_status,sent_at,status,error,analyzed_at)',
     );
   if (error) throw error;
-  return (data as unknown as (Omit<QueueItem, 'analysis'> & { analyses: unknown })[]).map(({ analyses, ...l }) => ({
-    ...l,
-    analysis: (Array.isArray(analyses) ? analyses[0] : analyses) ?? null,
-  })) as QueueItem[];
+  type Row = Omit<QueueItem, 'analysis'> & { analyses: (QueueItem['analysis'] & { analyzed_at: string | null }) | (QueueItem['analysis'] & { analyzed_at: string | null })[] | null };
+  return (data as unknown as Row[]).map(({ analyses, ...l }) => {
+    const a = Array.isArray(analyses) ? analyses[0] : analyses;
+    return { ...l, analysis: a ? withEffectiveStatus(a) : null };
+  });
 }
 
 export interface LeadDetail {
@@ -28,12 +33,8 @@ export interface LeadDetail {
     id: string; name: string; company: string; phone: string; city: string | null; source: string;
     rep_id: string; product_interest: string | null; notes: string | null; last_contact_date: string;
   };
-  messages: { id: string; sender: 'rep' | 'buyer'; text: string; sent_at: string }[];
-  analysis: {
-    tag: Tag; score: number; reason: string; next_followup_date: string; draft: string;
-    draft_status: 'pending' | 'sent'; sent_at: string | null; pending_draft: string | null; status: 'ready' | 'analyzing' | 'error';
-    error: string | null; points: { label: string; pts: number }[];
-  } | null;
+  messages: { id: string; sender: Sender; text: string; sent_at: string }[];
+  analysis: (Omit<AnalysisRow, 'analyzed_at'> & { points: { label: string; pts: number }[] }) | null;
 }
 
 export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
@@ -50,7 +51,7 @@ export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
     analysis: a
       ? {
           tag: a.tag, score: a.score, reason: a.reason, next_followup_date: a.next_followup_date, draft: a.draft,
-          draft_status: a.draft_status, sent_at: a.sent_at, pending_draft: a.pending_draft, status: a.status, error: a.error,
+          draft_status: a.draft_status, sent_at: a.sent_at, pending_draft: a.pending_draft, ...effectiveStatus(a),
           points: a.signals?.computed?.points ?? [],
         }
       : null,

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { api } from '@/lib/api-client';
 import { ShimmerButton } from '@/components/ui/shimmer-button';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
@@ -18,12 +19,6 @@ function PlaceholderChips({ items }: { items: string[] }) {
       {items.map((p, i) => <mark key={i} className="rounded bg-amber-200 px-1.5 py-0.5 text-amber-950">{p}</mark>)}
     </div>
   );
-}
-
-async function call(url: string, init: RequestInit) {
-  const res = await fetch(url, { headers: { 'content-type': 'application/json' }, ...init });
-  if (!res.ok) throw new Error(((await res.json().catch(() => null)) as { error?: string } | null)?.error ?? 'Request failed');
-  return res.json();
 }
 
 export function DraftEditor({
@@ -43,7 +38,7 @@ export function DraftEditor({
     setText(v);
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      call(`/api/leads/${leadId}/draft`, { method: 'PATCH', body: JSON.stringify({ draft: v }) }).catch(() => toast.error('Could not save draft'));
+      api(`/api/leads/${leadId}/draft`, { method: 'PATCH', body: JSON.stringify({ draft: v }) }).catch(() => toast.error('Could not save draft'));
     }, 600);
   }
 
@@ -51,7 +46,7 @@ export function DraftEditor({
     clearTimeout(timer.current);
     setBusy('send');
     try {
-      await call(`/api/leads/${leadId}/send`, { method: 'POST', body: JSON.stringify({ draft: text }) });
+      await api(`/api/leads/${leadId}/send`, { method: 'POST', body: JSON.stringify({ draft: text }) });
       toast.success(`Sent to ${firstName} · logged in chat`);
       onSent();
     } catch (e) {
@@ -64,7 +59,7 @@ export function DraftEditor({
     clearTimeout(timer.current);
     setBusy('regen');
     try {
-      await call(`/api/leads/${leadId}/analyze?step=write`, { method: 'POST' });
+      await api(`/api/leads/${leadId}/analyze?step=write`, { method: 'POST' });
       router.refresh();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Could not regenerate');
@@ -75,7 +70,7 @@ export function DraftEditor({
 
   async function resolvePending(use: boolean) {
     try {
-      await call(`/api/leads/${leadId}/draft`, { method: 'PATCH', body: JSON.stringify(use ? { usePending: true } : { dismissPending: true }) });
+      await api(`/api/leads/${leadId}/draft`, { method: 'PATCH', body: JSON.stringify(use ? { usePending: true } : { dismissPending: true }) });
       router.refresh();
     } catch {
       toast.error('Could not update draft');

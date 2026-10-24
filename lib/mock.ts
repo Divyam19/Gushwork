@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import type { Message } from './schemas';
+import type { Message, Rep } from './schemas';
 
 const DIR = path.join(process.cwd(), 'mock-data');
 
@@ -9,7 +9,6 @@ export interface MockLead {
   source: string; rep_id: string; product_interest: string;
   last_contact_date: string; notes: string;
 }
-export interface MockRep { id: string; name: string; initials: string; color: string }
 export interface Expected { lead_id: string; tag: 'Hot' | 'Warm' | 'Cold'; why: string; next_followup_date?: string }
 
 function parseCsv(text: string): string[][] {
@@ -31,7 +30,7 @@ function parseCsv(text: string): string[][] {
 }
 
 export function loadMock() {
-  const reps: MockRep[] = JSON.parse(readFileSync(path.join(DIR, 'reps.json'), 'utf8'));
+  const reps: Rep[] = JSON.parse(readFileSync(path.join(DIR, 'reps.json'), 'utf8'));
   const [head, ...rest] = parseCsv(readFileSync(path.join(DIR, 'leads.csv'), 'utf8'));
   const leads: MockLead[] = rest
     .filter((r) => r.length > 1)

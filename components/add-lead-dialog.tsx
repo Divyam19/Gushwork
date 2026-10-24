@@ -5,18 +5,19 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { ApiError, api } from '@/lib/api-client';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import type { MockRep } from '@/lib/mock';
+import type { Rep } from '@/lib/schemas';
 import { parseWhatsApp } from '@/lib/whatsapp-parser';
 
 const SOURCES = ['IndiaMART', 'Website', 'Trade Show', 'Referral', 'Cold Call', 'WhatsApp'];
 export const selectClass =
   'h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-base md:text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50';
 
-export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | null }) {
+export function AddLeadDialog({ reps, rep }: { reps: Rep[]; rep: string | null }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -31,26 +32,28 @@ export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | nu
     const v = (k: string) => String(f.get(k) ?? '').trim();
     setBusy(true);
     try {
-      const res = await fetch('/api/leads', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          name: v('name'), company: v('company'), phone: v('phone'), city: v('city') || undefined,
-          source: v('source'), rep_id: repId, product_interest: v('product_interest') || undefined,
-          notes: v('notes') || undefined, messages: parsed.messages,
-        }),
+      const body = JSON.stringify({
+        name: v('name'), company: v('company'), phone: v('phone'), city: v('city') || undefined,
+        source: v('source'), rep_id: repId, product_interest: v('product_interest') || undefined,
+        notes: v('notes') || undefined, messages: parsed.messages,
       });
-      const data = (await res.json().catch(() => ({}))) as { id?: string; error?: string };
-      if (data.id) {
-        if (!res.ok) toast.error(`Lead saved, but analysis failed: ${data.error}`);
-        else toast.success(`${v('name')} added and analysed`);
-        setOpen(false);
-        setChat('');
-        router.push(`/?${rep ? `rep=${rep}&` : ''}lead=${data.id}`);
-        router.refresh();
-      } else {
-        toast.error(data.error ?? 'Could not add lead');
+      let id: string;
+      try {
+        ({ id } = await api<{ id: string }>('/api/leads', { method: 'POST', body }));
+        toast.success(`${v('name')} added and analysed`);
+      } catch (err) {
+        // The lead is saved even when analysis fails; the route still returns its id.
+        const savedId = err instanceof ApiError ? (err.data?.id as string | undefined) : undefined;
+        if (!savedId) throw err;
+        id = savedId;
+        toast.error(`Lead saved, but analysis failed: ${(err as Error).message}`);
       }
+      setOpen(false);
+      setChat('');
+      router.push(`/?${rep ? `rep=${rep}&` : ''}lead=${id}`);
+      router.refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Could not add lead');
     } finally {
       setBusy(false);
     }

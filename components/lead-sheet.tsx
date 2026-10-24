@@ -16,9 +16,8 @@ import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/
 import { Skeleton } from '@/components/ui/skeleton';
 import { TZ, dayLabel, istDate } from '@/lib/dates';
 import type { LeadDetail } from '@/lib/leads';
-import type { MockRep } from '@/lib/mock';
 import { dueLabel } from '@/lib/queue';
-import type { Tag } from '@/lib/schemas';
+import type { Rep, Tag } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import { TAG_THEME, initials } from '@/components/tag-theme';
 
@@ -87,7 +86,7 @@ function Step({ n, icon, title, aside, className, children }: { n: number; icon:
   );
 }
 
-export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetail; rep: MockRep | undefined; today: string; closeHref: string }) {
+export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetail; rep: Rep | undefined; today: string; closeHref: string }) {
   const router = useRouter();
   const { lead, messages, analysis: a } = detail;
   const end = useRef<HTMLDivElement>(null);

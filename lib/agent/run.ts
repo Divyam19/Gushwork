@@ -1,3 +1,4 @@
+import { effectiveStatus } from '../analysis-status';
 import { db } from '../db';
 import { istDate, todayIST } from '../dates';
 import { MODEL } from '../llm';
@@ -51,23 +52,20 @@ export async function analyzeLead(leadId: string, opts: { step?: 'full' | 'write
   const input = { ...lead, last_contact_date: lastContactOf(messages, lead.last_contact_date) };
   const repName: string = lead.reps?.name ?? 'Team';
 
-  if (existing) await sb.from('analyses').update({ status: 'analyzing', error: null }).eq('lead_id', leadId);
+  // One run at a time per lead: stops a double click or a hammering client from stacking LLM calls.
+  if (existing && effectiveStatus(existing).status === 'analyzing') throw new Error('Analysis already running');
+  // analyzed_at doubles as "started at" while analyzing, so a run killed at maxDuration can be detected as stale.
+  if (existing) await sb.from('analyses').update({ status: 'analyzing', error: null, analyzed_at: new Date().toISOString() }).eq('lead_id', leadId);
 
-  let out: AgentOutput | undefined;
-  let lastErr: unknown;
-  for (let attempt = 0; attempt < 2 && !out; attempt++) {
-    try {
-      const prior = opts.step === 'write' && existing ? (existing.signals as Signals) : undefined;
-      out = await runAgent(input, repName, messages, todayIST(), prior);
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-
-  if (!out) {
-    const msg = lastErr instanceof Error ? lastErr.message : String(lastErr);
+  // No retry loop here: callStructured already retries each LLM call, and nesting them could exceed maxDuration.
+  let out: AgentOutput;
+  try {
+    const prior = opts.step === 'write' && existing ? (existing.signals as Signals) : undefined;
+    out = await runAgent(input, repName, messages, todayIST(), prior);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
     if (existing) await sb.from('analyses').update({ status: 'error', error: msg }).eq('lead_id', leadId);
-    throw lastErr;
+    throw e;
   }
 
   const wasEdited =

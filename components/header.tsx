@@ -2,9 +2,9 @@ import { PackageIcon } from 'lucide-react';
 import { AddLeadDialog } from '@/components/add-lead-dialog';
 import { SearchPalette, type SearchLead } from '@/components/search-palette';
 import { RepSwitcher } from '@/components/rep-switcher';
-import type { MockRep } from '@/lib/mock';
+import type { Rep } from '@/lib/schemas';
 
-export function Header({ reps, rep, view, rest, leads }: { reps: MockRep[]; rep: string | null; view: string | null; rest: string; leads: SearchLead[] }) {
+export function Header({ reps, rep, view, rest, leads }: { reps: Rep[]; rep: string | null; view: string | null; rest: string; leads: SearchLead[] }) {
   return (
     <header className="sticky top-0 z-30 shrink-0 border-b border-zinc-200 bg-white/90 pt-[env(safe-area-inset-top)] backdrop-blur-md">
       <div className="flex h-14 w-full items-center justify-between gap-3 px-4 md:h-auto md:py-2.5">
