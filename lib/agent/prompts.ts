@@ -1,14 +1,7 @@
 import { istDate } from '../dates';
-import type { Message } from '../schemas';
+import type { LeadRow, Message } from '../schemas';
 
-export interface LeadInput {
-  name: string;
-  company: string;
-  source: string;
-  product_interest: string | null;
-  notes: string | null;
-  last_contact_date: string;
-}
+export type LeadInput = Pick<LeadRow, 'name' | 'company' | 'source' | 'product_interest' | 'notes' | 'last_contact_date'>;
 
 export function renderChat(messages: Message[]): string {
   if (!messages.length) return 'NO CHAT (this lead has CRM notes only).';

@@ -1,14 +1,11 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import type { Message, Rep } from './schemas';
+import type { LeadRow, Message, Rep } from './schemas';
 
 const DIR = path.join(process.cwd(), 'mock-data');
 
-export interface MockLead {
-  id: string; name: string; company: string; phone: string; city: string;
-  source: string; rep_id: string; product_interest: string;
-  last_contact_date: string; notes: string;
-}
+/** A lead as read from leads.csv: every field is a string, '' when empty (seed maps '' to null). */
+export type MockLead = { [K in keyof LeadRow]: string };
 export interface Expected { lead_id: string; tag: 'Hot' | 'Warm' | 'Cold'; why: string; next_followup_date?: string }
 
 function parseCsv(text: string): string[][] {

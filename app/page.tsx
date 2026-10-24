@@ -55,6 +55,7 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
           <LeadTable q={q} view={view} ctx={{ reps, today, rest, mostUrgentId: q.mostUrgentId }} />
         </section>
       </div>
+      {/* The only poller: it also covers the open lead sheet, since that lead is in `items`. */}
       {items.some((i) => i.analysis?.status === 'analyzing') && <AutoRefresh />}
       {detail && <LeadSheet key={detail.lead.id} detail={detail} rep={reps.find((r) => r.id === detail.lead.rep_id)} today={today} closeHref={rest ? `/?${rest}` : '/'} />}
     </>

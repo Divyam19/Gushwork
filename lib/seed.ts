@@ -82,16 +82,13 @@ export async function seedDatabase(opts: { refresh?: boolean; log?: (s: string) 
   const must = (what: string, error: { message: string } | null) => {
     if (error) throw new Error(`${what}: ${error.message}`);
   };
-  const { data: oldMsgs, error: oldErr } = await sb.from('messages').select('id');
-  must('read messages', oldErr);
-
   must('upsert reps', (await sb.from('reps').upsert(reps)).error);
   must('upsert leads', (await sb.from('leads').upsert(leadRows)).error);
-  must('insert messages', (await sb.from('messages').insert(msgRows)).error);
-  const oldIds = (oldMsgs ?? []).map((m) => m.id as string);
-  for (let i = 0; i < oldIds.length; i += 100) {
-    must('delete old messages', (await sb.from('messages').delete().in('id', oldIds.slice(i, i + 100))).error);
-  }
+  const { data: inserted, error: insErr } = await sb.from('messages').insert(msgRows).select('id');
+  must('insert messages', insErr);
+  // Keep only what was just inserted. Filtering on the new ids avoids reading the old ones (PostgREST caps reads at 1,000 rows).
+  const newIds = (inserted ?? []).map((m) => m.id as string);
+  must('delete old messages', (await sb.from('messages').delete().not('id', 'in', `(${newIds.join(',')})`)).error);
   must('upsert analyses', (await sb.from('analyses').upsert(analysisRows)).error);
   // Leads added by reviewers (and their messages/analyses, via cascade) go; so do reps no longer in the seed.
   must('delete extra leads', (await sb.from('leads').delete().not('id', 'in', `(${leadRows.map((l) => l.id).join(',')})`)).error);

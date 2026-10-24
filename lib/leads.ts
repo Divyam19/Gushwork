@@ -1,7 +1,7 @@
 import { db } from './db';
 import type { QueueItem } from './queue';
 import { effectiveStatus } from './analysis-status';
-import type { AnalysisRow, Rep, Sender } from './schemas';
+import type { AnalysisRow, LeadRow, Rep, Sender } from './schemas';
 
 function withEffectiveStatus<T extends { status: AnalysisRow['status']; error: string | null; analyzed_at: string | null }>(a: T): T {
   return { ...a, ...effectiveStatus(a) };
@@ -29,10 +29,7 @@ export async function getQueueItems(): Promise<QueueItem[]> {
 }
 
 export interface LeadDetail {
-  lead: {
-    id: string; name: string; company: string; phone: string; city: string | null; source: string;
-    rep_id: string; product_interest: string | null; notes: string | null; last_contact_date: string;
-  };
+  lead: LeadRow;
   messages: { id: string; sender: Sender; text: string; sent_at: string }[];
   analysis: (Omit<AnalysisRow, 'analyzed_at'> & { points: { label: string; pts: number }[] }) | null;
 }

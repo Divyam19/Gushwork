@@ -1,16 +1,7 @@
 import { addDays, dayLabel, diffDays, istDate } from './dates';
-import type { AnalysisRow, Tag } from './schemas';
+import type { AnalysisRow, LeadRow, Tag } from './schemas';
 
-export interface QueueItem {
-  id: string;
-  name: string;
-  company: string;
-  phone: string;
-  city: string | null;
-  source: string;
-  rep_id: string;
-  product_interest: string | null;
-  last_contact_date: string;
+export interface QueueItem extends Omit<LeadRow, 'notes'> {
   analysis: Pick<AnalysisRow, 'tag' | 'score' | 'reason' | 'next_followup_date' | 'draft_status' | 'sent_at' | 'status' | 'error'> | null;
 }
 
@@ -28,9 +19,13 @@ const TAG_RANK: Record<Tag, number> = { Hot: 0, Warm: 1, Cold: 2 };
 
 type Analysed = QueueItem & { analysis: NonNullable<QueueItem['analysis']> };
 
+/** Sent today (IST). Puts a lead in Done today and makes the sheet show its Sent card. */
+export const isSentToday = (a: Pick<AnalysisRow, 'sent_at'> | null | undefined, today: string) =>
+  !!a?.sent_at && istDate(a.sent_at) === today;
+
 export function buildQueue(items: QueueItem[], today: string, rep: string | null): Queue {
   const scoped = items.filter((i): i is Analysed => !!i.analysis && (!rep || i.rep_id === rep));
-  const sentToday = (i: Analysed) => !!i.analysis.sent_at && istDate(i.analysis.sent_at) === today;
+  const sentToday = (i: Analysed) => isSentToday(i.analysis, today);
   const next = (i: Analysed) => i.analysis.next_followup_date;
   const byTag = (a: Analysed, b: Analysed) => TAG_RANK[a.analysis.tag] - TAG_RANK[b.analysis.tag];
   const byScore = (a: Analysed, b: Analysed) => b.analysis.score - a.analysis.score;

@@ -33,6 +33,20 @@ export type DraftStatus = 'pending' | 'sent';
 
 export interface Rep { id: string; name: string; initials: string; color: string }
 
+/** One row of `leads`. Views and the agent Pick from this. */
+export interface LeadRow {
+  id: string;
+  name: string;
+  company: string;
+  phone: string;
+  city: string | null;
+  source: string;
+  rep_id: string;
+  product_interest: string | null;
+  notes: string | null;
+  last_contact_date: string;
+}
+
 /** One row of `analyses`, minus the heavy `signals` blob. Queue and detail views each Pick what they need. */
 export interface AnalysisRow {
   tag: Tag;

@@ -7,28 +7,28 @@ import { motion } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 import { AddChatDialog } from '@/components/add-chat-dialog';
-import { AutoRefresh } from '@/components/auto-refresh';
 import { ChatThread } from '@/components/chat-thread';
 import { DraftEditor } from '@/components/draft-editor';
 import { RepAvatar } from '@/components/rep-avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TZ, dayLabel, istDate } from '@/lib/dates';
+import { HOT_AT, WARM_AT } from '@/lib/agent/score';
+import { TZ, dayLabel } from '@/lib/dates';
 import type { LeadDetail } from '@/lib/leads';
-import { dueLabel } from '@/lib/queue';
+import { dueLabel, isSentToday } from '@/lib/queue';
 import type { Rep, Tag } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import { TAG_THEME, initials } from '@/components/tag-theme';
 
-// Display range for the heat gauge. Tag cut-offs (20 / 50) come from lib/agent/score.ts.
+// Display range for the heat gauge.
 const MIN = -20;
 const MAX = 80;
 const pct = (v: number) => ((Math.min(MAX, Math.max(MIN, v)) - MIN) / (MAX - MIN)) * 100;
 
 function HeatGauge({ score, tag, points }: { score: number; tag: Tag; points: { label: string; pts: number }[] }) {
-  const warmAt = pct(20);
-  const hotAt = pct(50);
+  const warmAt = pct(WARM_AT);
+  const hotAt = pct(HOT_AT);
   return (
     <details className="group">
       <summary className="flex cursor-pointer list-none flex-col gap-1.5 select-none [&::-webkit-details-marker]:hidden">
@@ -105,13 +105,12 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
   const close = () => setOpen(false);
   const due = a ? dueLabel(a.next_followup_date, today) : null;
   const analyzing = a?.status === 'analyzing';
-  const sentToday = !!a?.sent_at && istDate(a.sent_at) === today;
+  const sentToday = isSentToday(a, today);
   const theme = a ? TAG_THEME[a.tag] : null;
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && close()} onOpenChangeComplete={(o) => !o && router.push(closeHref, { scroll: false })}>
       <SheetContent className="gap-0 bg-zinc-50 p-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[560px]">
-        {analyzing && <AutoRefresh />}
 
         <div className={cn('anim-fade flex flex-col gap-4 border-b bg-gradient-to-b p-5 pr-12', theme?.hero ?? 'from-zinc-100 to-white')}>
           <div className="flex items-center gap-3">

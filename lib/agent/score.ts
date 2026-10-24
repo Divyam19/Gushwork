@@ -35,6 +35,10 @@ function recency(days: number): { label: string; pts: number } {
   return { label: `Silent ${days} days`, pts: -20 };
 }
 
+/** Tag cut-offs. The lead sheet's heat gauge draws its bands from these. */
+export const WARM_AT = 20;
+export const HOT_AT = 50;
+
 export function score(i: ScoreInput): ScoreResult {
   const s = i.signals;
   const f = computeFlags(i);
@@ -53,6 +57,6 @@ export function score(i: ScoreInput): ScoreResult {
   add(r.label, r.pts);
 
   const total = points.reduce((a, p) => a + p.pts, 0);
-  const tag: Tag = s.lost.value ? 'Cold' : total >= 50 ? 'Hot' : total >= 20 ? 'Warm' : 'Cold';
+  const tag: Tag = s.lost.value ? 'Cold' : total >= HOT_AT ? 'Hot' : total >= WARM_AT ? 'Warm' : 'Cold';
   return { score: total, tag, computed: { ...f, points } };
 }
