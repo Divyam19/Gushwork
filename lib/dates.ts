@@ -37,3 +37,8 @@ export function firstMondayOf(year: number, month1: number): string {
   const offset = (8 - weekday(first)) % 7;
   return addDays(first, offset);
 }
+
+/** "Tue 27 Oct" for a YYYY-MM-DD date */
+export function dayLabel(iso: string): string {
+  return formatInTimeZone(new Date(`${iso}T00:00:00Z`), 'UTC', 'EEE d MMM');
+}

@@ -7,7 +7,7 @@ Start date: Sat 2026-10-24. Deadline: 36h from receipt.
 - [x] Phase 1b: prompts, extract, llm, eval; pnpm eval 16/16 tags, 10/10 dates x3 runs (D-18)
 - [x] Phase 1c: write.ts, run.ts (analyzeLead, step=write)
 - [x] Phase 2: seed.ts (+ lib/seed.ts, frozen fixture mock-data/seed-analyses.json); 25 leads, 52 msgs, 25 analyses verified in Supabase
-- [ ] Phase 3: dashboard + queue.ts
+- [x] Phase 3: lib/queue.ts (+tests), dashboard (header, rep switcher, stats, lead cards, sections); lead cards link to ?lead=ID, Sheet is Phase 4
 - [ ] Phase 4: lead sheet
 - [ ] Phase 5: add lead / add chat + parser
 - [ ] Phase 6: polish, Cmd+K, cron

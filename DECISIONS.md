@@ -64,3 +64,9 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-20 · analyzeLead cannot store an error row for a never-analysed lead
 **Decision** `analyses` columns are NOT NULL, so on failure `status='error'` is stored only when a previous analysis exists; otherwise the error is thrown to the caller. **Why** avoids schema change; seeding pre-analyses every lead, so new leads (Phase 5) must handle the throw in the API route.
+
+## D-21 · Dashboard data read inside a Suspense boundary
+**Decision** `app/page.tsx` renders a static skeleton shell; the DB read, `searchParams` and today's date live in an async `Dashboard` component inside `<Suspense>`. **Why** This Next.js version (Cache Components) fails the build if runtime data is read outside Suspense. Also gives PRD §7.8 skeleton loading for free.
+
+## D-22 · shadcn "base-nova" (Base UI) components
+**Decision** Used the default `shadcn init` style, which builds on Base UI, not Radix. Accordion is uncontrolled and collapsed by default. Magic UI: number-ticker and border-beam only (shimmer-button comes with Phase 4).
