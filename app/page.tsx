@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import { Header } from '@/components/header';
 import { LeadList } from '@/components/lead-list';
-import { StatsRow } from '@/components/stats-row';
+import { TodayHero } from '@/components/stats-row';
 import { Skeleton } from '@/components/ui/skeleton';
-import { todayIST } from '@/lib/dates';
+import { greetingIST, longDateIST, todayIST } from '@/lib/dates';
 import { AutoRefresh } from '@/components/auto-refresh';
 import { LeadSheet } from '@/components/lead-sheet';
 import { getLeadDetail, getQueueItems, getReps } from '@/lib/leads';
@@ -19,12 +19,23 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
   const leadParam = typeof sp.lead === 'string' ? sp.lead : null;
   const detail = leadParam ? await getLeadDetail(leadParam) : null;
   const rest = rep ? `rep=${rep}` : '';
+  const who = reps.find((r) => r.id === rep)?.name.split(' ')[0];
+  const greeting = `${greetingIST()}${who ? `, ${who}` : ''}`;
+  const next = q.overdue[0] ?? q.dueToday[0] ?? null;
 
   return (
     <>
       <Header reps={reps} rep={rep} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
-      <StatsRow stats={q.stats} />
-      <LeadList q={q} ctx={{ reps, today, showRep: !rep, rest, mostUrgentId: q.mostUrgentId }} />
+      <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 py-6 sm:px-6">
+        <TodayHero
+          stats={q.stats}
+          date={longDateIST()}
+          greeting={greeting}
+          next={next}
+          nextHref={next ? `/?${rest}${rest ? '&' : ''}lead=${next.id}` : null}
+        />
+        <LeadList q={q} ctx={{ reps, today, showRep: !rep, rest, mostUrgentId: q.mostUrgentId }} />
+      </div>
       {items.some((i) => i.analysis?.status === 'analyzing') && <AutoRefresh />}
       {detail && <LeadSheet detail={detail} rep={reps.find((r) => r.id === detail.lead.rep_id)} today={today} closeHref={rest ? `/?${rest}` : '/'} />}
     </>
@@ -34,12 +45,10 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
 function DashboardSkeleton() {
   return (
     <>
-      <Skeleton className="h-10 w-72" />
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-24 rounded-xl" />)}
-      </div>
-      <div className="flex flex-col gap-2">
-        {[0, 1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-16 rounded-xl" />)}
+      <div className="h-[57px] border-b bg-white" />
+      <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 py-6 sm:px-6">
+        <Skeleton className="h-52 rounded-3xl" />
+        <Skeleton className="h-80 rounded-2xl" />
       </div>
     </>
   );
@@ -47,7 +56,7 @@ function DashboardSkeleton() {
 
 export default function Home({ searchParams }: PageProps<'/'>) {
   return (
-    <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6">
+    <main className="flex w-full flex-1 flex-col">
       <Suspense fallback={<DashboardSkeleton />}>
         <Dashboard searchParams={searchParams} />
       </Suspense>

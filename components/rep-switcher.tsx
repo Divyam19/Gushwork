@@ -5,15 +5,18 @@ import { cn } from '@/lib/utils';
 
 export function RepSwitcher({ reps, selected }: { reps: MockRep[]; selected: string | null }) {
   const item = (active: boolean) =>
-    cn('rounded-full transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary', active ? 'opacity-100 ring-2 ring-primary ring-offset-2' : 'opacity-60 hover:opacity-100');
+    cn(
+      'flex h-7 items-center rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary',
+      active ? 'bg-white shadow-sm ring-1 ring-zinc-200' : 'opacity-55 grayscale-[40%] hover:opacity-100 hover:grayscale-0',
+    );
   return (
-    <nav aria-label="Switch rep" className="flex items-center gap-1.5">
-      <Link href="/" aria-current={!selected} className={cn(item(!selected), 'flex h-8 items-center bg-zinc-900 px-3 text-xs font-semibold text-white')}>
+    <nav aria-label="Switch rep" className="flex items-center gap-0.5 rounded-full bg-zinc-100 p-0.5">
+      <Link href="/" aria-current={!selected} className={cn(item(!selected), 'px-3 text-xs font-semibold text-zinc-900')}>
         All
       </Link>
       {reps.map((r) => (
-        <Link key={r.id} href={`/?rep=${r.id}`} title={r.name} aria-label={r.name} aria-current={selected === r.id} className={item(selected === r.id)}>
-          <RepAvatar rep={r} />
+        <Link key={r.id} href={`/?rep=${r.id}`} title={r.name} aria-label={r.name} aria-current={selected === r.id} className={cn(item(selected === r.id), 'p-0.5')}>
+          <RepAvatar rep={r} size="sm" />
         </Link>
       ))}
     </nav>

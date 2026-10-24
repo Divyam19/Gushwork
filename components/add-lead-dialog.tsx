@@ -58,8 +58,8 @@ export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | nu
 
   return (
     <Dialog open={open} onOpenChange={(o) => !busy && setOpen(o)}>
-      <DialogTrigger render={<Button />}>
-        <PlusIcon /> Add lead
+      <DialogTrigger render={<Button aria-label="Add lead" />}>
+        <PlusIcon /> <span className="hidden sm:inline">Add lead</span>
       </DialogTrigger>
       <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>

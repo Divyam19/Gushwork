@@ -42,3 +42,12 @@ export function firstMondayOf(year: number, month1: number): string {
 export function dayLabel(iso: string): string {
   return formatInTimeZone(new Date(`${iso}T00:00:00Z`), 'UTC', 'EEE d MMM');
 }
+
+export function greetingIST(now: Date = new Date()): string {
+  const h = Number(formatInTimeZone(now, TZ, 'H'));
+  return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+}
+
+export function longDateIST(now: Date = new Date()): string {
+  return formatInTimeZone(now, TZ, 'EEEE, d MMMM');
+}

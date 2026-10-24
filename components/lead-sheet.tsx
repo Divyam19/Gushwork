@@ -18,40 +18,12 @@ import type { MockRep } from '@/lib/mock';
 import { dueLabel } from '@/lib/queue';
 import type { Tag } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
-
-// One colour family per tag; the sheet's hero and "Why now" rail take on the lead's temperature.
-const THEME: Record<Tag, { hero: string; avatar: string; pill: string; rail: string; label: string }> = {
-  Hot: {
-    hero: 'from-rose-100 via-orange-50 to-white',
-    avatar: 'bg-gradient-to-br from-rose-500 to-orange-400 text-white',
-    pill: 'bg-rose-600 text-white',
-    rail: 'bg-rose-500',
-    label: 'Ready to buy',
-  },
-  Warm: {
-    hero: 'from-amber-100 via-amber-50 to-white',
-    avatar: 'bg-gradient-to-br from-amber-400 to-yellow-300 text-amber-950',
-    pill: 'bg-amber-400 text-amber-950',
-    rail: 'bg-amber-400',
-    label: 'Interested',
-  },
-  Cold: {
-    hero: 'from-slate-200 via-slate-50 to-white',
-    avatar: 'bg-gradient-to-br from-slate-500 to-sky-400 text-white',
-    pill: 'bg-slate-600 text-white',
-    rail: 'bg-slate-400',
-    label: 'Cooling off',
-  },
-};
+import { TAG_THEME, initials } from '@/components/tag-theme';
 
 // Display range for the heat gauge. Tag cut-offs (20 / 50) come from lib/agent/score.ts.
 const MIN = -20;
 const MAX = 80;
 const pct = (v: number) => ((Math.min(MAX, Math.max(MIN, v)) - MIN) / (MAX - MIN)) * 100;
-
-function initials(name: string) {
-  return name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
-}
 
 function HeatGauge({ score, tag, points }: { score: number; tag: Tag; points: { label: string; pts: number }[] }) {
   const warmAt = pct(20);
@@ -63,7 +35,7 @@ function HeatGauge({ score, tag, points }: { score: number; tag: Tag; points: { 
           <span className="absolute top-1/2 h-3 w-px -translate-y-1/2 bg-white/80" style={{ left: `${warmAt}%` }} />
           <span className="absolute top-1/2 h-3 w-px -translate-y-1/2 bg-white/80" style={{ left: `${hotAt}%` }} />
           <span
-            className={cn('absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[10px] font-bold tabular-nums shadow-md ring-2 ring-white', THEME[tag].pill)}
+            className={cn('absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[10px] font-bold tabular-nums shadow-md ring-2 ring-white', TAG_THEME[tag].pill)}
             style={{ left: `clamp(12px, ${pct(score)}%, calc(100% - 12px))` }}
           >
             {score}
@@ -120,7 +92,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
   const close = () => router.push(closeHref, { scroll: false });
   const due = a ? dueLabel(a.next_followup_date, today) : null;
   const analyzing = a?.status === 'analyzing';
-  const theme = a ? THEME[a.tag] : null;
+  const theme = a ? TAG_THEME[a.tag] : null;
 
   return (
     <Sheet open onOpenChange={(o) => !o && close()}>
