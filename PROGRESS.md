@@ -11,4 +11,4 @@ Start date: Sat 2026-10-24. Deadline: 36h from receipt.
 - [x] Phase 4: lead sheet (why chips, chat, draft editor w/ autosave, Mark as sent, Copy, Regenerate, pending_draft prompt; send/draft/analyze routes). "+ Add chat" button lands in Phase 5
 - [x] Phase 5: add lead + add chat dialogs, lib/whatsapp-parser.ts (+5 tests), POST /api/leads and /api/leads/[id]/messages (smoke-tested)
 - [x] Phase 6: Cmd+K search palette, cron reseed (route + vercel.json, auth verified). Mobile 375px and palette NOT browser-verified (preview host unavailable)
-- [ ] Phase 7: ship, smoke test, README, NOTE.md, video
+- [ ] Phase 7: README + NOTE.md written (URLs are placeholders); API smoke checks done (edit persists, L07 placeholder, L12 Cold->Hot). STILL NEEDED from user: GitHub repo, Vercel deploy + env vars, browser smoke test on live URL, video

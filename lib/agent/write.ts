@@ -51,6 +51,6 @@ BUYER WAITING: ${i.computed.buyer_waiting} | DAYS SINCE LAST CONTACT: ${i.comput
 NEXT FOLLOW-UP: ${i.nextFollowup}
 
 CHAT:
-${renderChat(i.messages)}${owed ? '\n\nREQUIRED: the draft must DELIVER what we owe right now, with a [bracket placeholder] for the actual price/slot/date/document. Do not write "I will", "I\'m checking" or "let me confirm". The reason must say WE owe it (e.g. "We owe a trial slot - promised 8 days ago").' : ''}`;
+${renderChat(i.messages)}${!owed && i.computed.buyer_waiting ? '\n\nREQUIRED: answer the buyer\'s open request in this message. If it needs a price, date, slot or document we do not have, put a [bracket placeholder] for it. Do not write "I will send shortly" or "let me check".' : ''}${owed ? '\n\nREQUIRED: the draft must DELIVER what we owe right now, with a [bracket placeholder] for the actual price/slot/date/document. Do not write "I will", "I\'m checking" or "let me confirm". The reason must say WE owe it (e.g. "We owe a trial slot - promised 8 days ago").' : ''}`;
   return callStructured({ schema: Written, name: 'written', system: WRITE_SYSTEM, user, model });
 }

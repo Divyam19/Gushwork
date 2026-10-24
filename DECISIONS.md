@@ -88,3 +88,6 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-28 · Search palette is client-side over the already-loaded leads
 **Decision** Cmd/Ctrl+K filters the 25 leads passed from the server in-memory via cmdk. No search endpoint. **Why** Tiny dataset; zero latency.
+
+## D-29 · Write step: buyer-waiting leads get a REQUIRED "answer now, use placeholders" directive
+**Decision** Extends D-19: not just when we owe something, but whenever the buyer is waiting, the draft must answer the open request with a `[placeholder]` for unknown price/date. **Why** Smoke test on L12 (new chat "send updated price, 3 machines") produced drafts that ignored or deferred the request. **Caveat** The frozen seed fixture drafts predate this; run `pnpm seed --refresh` to regenerate them (costs ~25 LLM calls).
