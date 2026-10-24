@@ -11,14 +11,12 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 const PLACEHOLDER = /\[[^\]]+\]/g;
 
-function Highlighted({ text }: { text: string }) {
-  const parts = text.split(/(\[[^\]]+\])/g);
+function PlaceholderChips({ items }: { items: string[] }) {
   return (
-    <p className="whitespace-pre-wrap rounded-md bg-zinc-50 px-3 py-2 text-xs text-zinc-600">
-      {parts.map((p, i) =>
-        /^\[[^\]]+\]$/.test(p) ? <mark key={i} className="rounded bg-amber-200 px-0.5 text-amber-950">{p}</mark> : <span key={i}>{p}</span>,
-      )}
-    </p>
+    <div className="flex flex-wrap items-center gap-1.5 rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800 ring-1 ring-amber-200">
+      <span>Fill in before sending:</span>
+      {items.map((p, i) => <mark key={i} className="rounded bg-amber-200 px-1.5 py-0.5 text-amber-950">{p}</mark>)}
+    </div>
   );
 }
 
@@ -35,7 +33,8 @@ export function DraftEditor({
   const [text, setText] = useState(initial);
   const [busy, setBusy] = useState<'send' | 'regen' | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const placeholders = text.match(PLACEHOLDER)?.length ?? 0;
+  const found = text.match(PLACEHOLDER) ?? [];
+  const placeholders = found.length;
   const blocked = placeholders > 0 || !text.trim();
 
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -94,13 +93,8 @@ export function DraftEditor({
           </span>
         </div>
       )}
-      <Textarea value={text} onChange={(e) => edit(e.target.value)} className="min-h-32 text-sm" aria-label="Draft message" />
-      {placeholders > 0 && (
-        <>
-          <Highlighted text={text} />
-          <p className="text-xs font-medium text-amber-700">Fill {placeholders} placeholder{placeholders > 1 ? 's' : ''} before sending</p>
-        </>
-      )}
+      <Textarea value={text} onChange={(e) => edit(e.target.value)} className="min-h-32 bg-white text-sm leading-relaxed" aria-label="Draft message" />
+      {placeholders > 0 && <PlaceholderChips items={found} />}
       <div className="flex flex-wrap items-center gap-2">
         <Tooltip>
           <TooltipTrigger render={<span tabIndex={blocked ? 0 : -1} />}>

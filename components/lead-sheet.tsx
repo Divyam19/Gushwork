@@ -1,14 +1,14 @@
 'use client';
 
+import { CalendarClockIcon, MapPinIcon, MessagesSquareIcon, PhoneIcon, SparklesIcon, TagIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { toast } from 'sonner';
 import { AddChatDialog } from '@/components/add-chat-dialog';
 import { AutoRefresh } from '@/components/auto-refresh';
 import { ChatThread } from '@/components/chat-thread';
 import { DraftEditor } from '@/components/draft-editor';
 import { RepAvatar } from '@/components/rep-avatar';
-import { TagBadge } from '@/components/tag-badge';
-import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -16,63 +16,178 @@ import { dayLabel } from '@/lib/dates';
 import type { LeadDetail } from '@/lib/leads';
 import type { MockRep } from '@/lib/mock';
 import { dueLabel } from '@/lib/queue';
+import type { Tag } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
-import { useEffect, useRef } from 'react';
+
+// One colour family per tag; the sheet's hero and "Why now" rail take on the lead's temperature.
+const THEME: Record<Tag, { hero: string; avatar: string; pill: string; rail: string; label: string }> = {
+  Hot: {
+    hero: 'from-rose-100 via-orange-50 to-white',
+    avatar: 'bg-gradient-to-br from-rose-500 to-orange-400 text-white',
+    pill: 'bg-rose-600 text-white',
+    rail: 'bg-rose-500',
+    label: 'Ready to buy',
+  },
+  Warm: {
+    hero: 'from-amber-100 via-amber-50 to-white',
+    avatar: 'bg-gradient-to-br from-amber-400 to-yellow-300 text-amber-950',
+    pill: 'bg-amber-400 text-amber-950',
+    rail: 'bg-amber-400',
+    label: 'Interested',
+  },
+  Cold: {
+    hero: 'from-slate-200 via-slate-50 to-white',
+    avatar: 'bg-gradient-to-br from-slate-500 to-sky-400 text-white',
+    pill: 'bg-slate-600 text-white',
+    rail: 'bg-slate-400',
+    label: 'Cooling off',
+  },
+};
+
+// Display range for the heat gauge. Tag cut-offs (20 / 50) come from lib/agent/score.ts.
+const MIN = -20;
+const MAX = 80;
+const pct = (v: number) => ((Math.min(MAX, Math.max(MIN, v)) - MIN) / (MAX - MIN)) * 100;
+
+function initials(name: string) {
+  return name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+}
+
+function HeatGauge({ score, tag, points }: { score: number; tag: Tag; points: { label: string; pts: number }[] }) {
+  const warmAt = pct(20);
+  const hotAt = pct(50);
+  return (
+    <details className="group">
+      <summary className="flex cursor-pointer list-none flex-col gap-1.5 select-none [&::-webkit-details-marker]:hidden">
+        <div className="relative h-2 rounded-full bg-gradient-to-r from-slate-300 via-amber-300 to-rose-500">
+          <span className="absolute top-1/2 h-3 w-px -translate-y-1/2 bg-white/80" style={{ left: `${warmAt}%` }} />
+          <span className="absolute top-1/2 h-3 w-px -translate-y-1/2 bg-white/80" style={{ left: `${hotAt}%` }} />
+          <span
+            className={cn('absolute top-1/2 flex size-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[10px] font-bold tabular-nums shadow-md ring-2 ring-white', THEME[tag].pill)}
+            style={{ left: `clamp(12px, ${pct(score)}%, calc(100% - 12px))` }}
+          >
+            {score}
+          </span>
+        </div>
+        <div className="relative h-4 text-[10px] font-medium uppercase tracking-wide text-zinc-500">
+          <span className="absolute left-0">Cold</span>
+          <span className="absolute -translate-x-1/2" style={{ left: `${(warmAt + hotAt) / 2}%` }}>Warm</span>
+          <span className="absolute right-0">Hot</span>
+        </div>
+        <span className="text-xs font-medium text-zinc-600 group-open:hidden">How was this scored? ›</span>
+      </summary>
+      <ul className="mt-1 flex flex-col divide-y divide-zinc-100 rounded-lg border border-zinc-200 bg-white/80 text-sm">
+        {points.map((p, i) => (
+          <li key={i} className="flex items-center justify-between gap-3 px-3 py-1.5">
+            <span className="truncate text-zinc-700" title={p.label}>{p.label}</span>
+            <span className={cn('shrink-0 font-semibold tabular-nums', p.pts > 0 ? 'text-emerald-600' : 'text-zinc-400')}>
+              {p.pts > 0 ? '+' : ''}{p.pts}
+            </span>
+          </li>
+        ))}
+        <li className="flex items-center justify-between px-3 py-1.5 font-semibold text-zinc-900">
+          <span>Total</span>
+          <span className="tabular-nums">{score}</span>
+        </li>
+      </ul>
+    </details>
+  );
+}
+
+function Step({ n, icon, title, aside, className, children }: { n: number; icon: ReactNode; title: string; aside?: ReactNode; className?: string; children: ReactNode }) {
+  return (
+    <section className={cn('relative flex flex-col gap-3 overflow-hidden rounded-2xl border p-4 shadow-xs', className)}>
+      <header className="flex items-center gap-2">
+        <span className="flex size-5 items-center justify-center rounded-full bg-zinc-900 text-[10px] font-bold text-white">{n}</span>
+        <span className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-zinc-600 [&_svg]:size-3.5">{icon}{title}</span>
+        {aside && <span className="ml-auto">{aside}</span>}
+      </header>
+      {children}
+    </section>
+  );
+}
 
 export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetail; rep: MockRep | undefined; today: string; closeHref: string }) {
   const router = useRouter();
   const { lead, messages, analysis: a } = detail;
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView(), [messages.length]);
+  const seen = useRef(messages.length);
+  // Open at the top (the action); only follow the chat when new messages arrive.
+  useEffect(() => {
+    if (messages.length > seen.current) end.current?.scrollIntoView({ behavior: 'smooth' });
+    seen.current = messages.length;
+  }, [messages.length]);
   const close = () => router.push(closeHref, { scroll: false });
   const due = a ? dueLabel(a.next_followup_date, today) : null;
   const analyzing = a?.status === 'analyzing';
+  const theme = a ? THEME[a.tag] : null;
 
   return (
     <Sheet open onOpenChange={(o) => !o && close()}>
-      <SheetContent className="w-full gap-0 p-0 sm:max-w-[560px]">
+      <SheetContent className="w-full gap-0 bg-zinc-50 p-0 data-[side=right]:sm:max-w-[560px]">
         {analyzing && <AutoRefresh />}
-        <div className="flex flex-col gap-2 border-b p-4 pr-12">
-          <div className="flex items-center gap-2">
-            <SheetTitle className="text-lg">{lead.name} · {lead.company}</SheetTitle>
+
+        <div className={cn('flex flex-col gap-4 border-b bg-gradient-to-b p-5 pr-12', theme?.hero ?? 'from-zinc-100 to-white')}>
+          <div className="flex items-center gap-3">
+            <span className={cn('flex size-12 shrink-0 items-center justify-center rounded-2xl text-base font-bold shadow-sm', theme?.avatar ?? 'bg-zinc-200 text-zinc-700')}>
+              {initials(lead.name)}
+            </span>
+            <div className="min-w-0">
+              <SheetTitle className="truncate text-lg font-semibold leading-tight text-zinc-900">{lead.name}</SheetTitle>
+              <p className="truncate text-sm text-zinc-600">{lead.company}</p>
+            </div>
+            {a && theme && (
+              <span className="ml-auto flex shrink-0 flex-col items-end gap-0.5">
+                <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-bold', theme.pill)}>{a.tag}</span>
+                <span className="text-[10px] font-medium text-zinc-500">{theme.label}</span>
+              </span>
+            )}
           </div>
-          <SheetDescription className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-            <button className="underline-offset-2 hover:underline" onClick={() => navigator.clipboard.writeText(lead.phone).then(() => toast.success('Phone copied'))}>{lead.phone}</button>
-            {lead.city && <span>{lead.city}</span>}
-            <span>{lead.source}</span>
-            {rep && <RepAvatar rep={rep} size="sm" />}
-            {a && <TagBadge tag={a.tag} score={a.score} />}
+          <SheetDescription className="flex flex-wrap items-center gap-1.5 text-xs text-zinc-700">
+            <button
+              className="inline-flex items-center gap-1 rounded-full bg-white/80 px-2.5 py-1 ring-1 ring-zinc-200 transition hover:bg-white hover:ring-zinc-300"
+              onClick={() => navigator.clipboard.writeText(lead.phone).then(() => toast.success('Phone copied'))}
+              title="Copy phone"
+            >
+              <PhoneIcon className="size-3" /> {lead.phone}
+            </button>
+            {lead.city && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2.5 py-1 ring-1 ring-zinc-200">
+                <MapPinIcon className="size-3" /> {lead.city}
+              </span>
+            )}
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2.5 py-1 ring-1 ring-zinc-200">
+              <TagIcon className="size-3" /> {lead.source}
+            </span>
+            {rep && (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/60 py-0.5 pl-0.5 pr-2.5 ring-1 ring-zinc-200">
+                <RepAvatar rep={rep} size="sm" /> {rep.name.split(' ')[0]}
+              </span>
+            )}
           </SheetDescription>
+          {a && !analyzing && <HeatGauge score={a.score} tag={a.tag} points={a.points} />}
         </div>
+
         <ScrollArea className="min-h-0 flex-1">
-          <div className="flex flex-col gap-5 p-4">
+          <div className="flex flex-col gap-4 p-4">
             {a ? (
               <>
-                <section className="flex flex-col gap-2">
-                  {analyzing ? <Skeleton className="h-5 w-full" /> : <p className="text-base font-medium leading-snug text-zinc-900">{a.reason}</p>}
-                  <p className="text-sm text-zinc-500">
-                    Follow up <span className={cn(due?.overdue && 'font-medium text-red-600')}>{dayLabel(a.next_followup_date)} · {due?.text}</span>
-                  </p>
-                  <details className="group text-sm">
-                    <summary className="cursor-pointer select-none text-xs font-medium text-primary hover:underline">Why {a.tag}? ({a.score} pts)</summary>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {a.points.map((p, i) => (
-                        <span
-                          key={i}
-                          title={p.label}
-                          className={cn(
-                            'rounded-full border px-2 py-0.5 text-xs',
-                            p.pts > 0 ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : p.pts < 0 ? 'border-zinc-300 bg-zinc-100 text-zinc-700' : 'border-zinc-200 bg-zinc-50 text-zinc-600',
-                          )}
-                        >
-                          <b className="tabular-nums">{p.pts > 0 ? '+' : ''}{p.pts}</b> {p.label}
-                        </span>
-                      ))}
-                    </div>
-                  </details>
-                </section>
-                <section className="flex flex-col gap-2 rounded-xl border bg-zinc-50/60 p-3">
-                  <h3 className="text-xs font-medium text-zinc-500">Suggested message</h3>
+                <Step
+                  n={1}
+                  icon={<CalendarClockIcon />}
+                  title="Why now"
+                  className="border-zinc-200 bg-white pl-5"
+                  aside={
+                    <span className={cn('rounded-full px-2 py-0.5 text-xs font-medium', due?.overdue ? 'bg-red-50 text-red-700 ring-1 ring-red-200' : 'bg-zinc-100 text-zinc-700')}>
+                      {due?.text === dayLabel(a.next_followup_date) ? due.text : `${dayLabel(a.next_followup_date)} · ${due?.text}`}
+                    </span>
+                  }
+                >
+                  <span className={cn('absolute inset-y-0 left-0 w-1', theme?.rail)} />
+                  {analyzing ? <Skeleton className="h-5 w-full" /> : <p className="text-[15px] font-medium leading-snug text-zinc-900">{a.reason}</p>}
+                </Step>
+
+                <Step n={2} icon={<SparklesIcon />} title="Send this" className="border-indigo-200 bg-gradient-to-b from-indigo-50 to-white">
                   {analyzing ? (
                     <Skeleton className="h-32 w-full" />
                   ) : (
@@ -85,20 +200,26 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
                       onSent={close}
                     />
                   )}
-                </section>
+                </Step>
               </>
             ) : (
-              <p className="text-sm text-muted-foreground">This lead hasn&apos;t been analysed yet.</p>
+              <p className="rounded-2xl border border-dashed bg-white p-4 text-sm text-muted-foreground">This lead hasn&apos;t been analysed yet.</p>
             )}
-            <Separator />
-            <section className="flex flex-col gap-2">
-              <h3 className="text-xs font-medium text-zinc-500">Conversation</h3>
+
+            <Step
+              n={a ? 3 : 1}
+              icon={<MessagesSquareIcon />}
+              title="Conversation"
+              aside={messages.length > 0 && <span className="text-xs text-zinc-500">{messages.length} message{messages.length === 1 ? '' : 's'}</span>}
+              className="border-[#e6dfd3] bg-[#f6f1e9]"
+            >
               <ChatThread messages={messages} notes={lead.notes} />
               <div ref={end} />
-            </section>
+            </Step>
           </div>
         </ScrollArea>
-        <div className="border-t p-3">
+
+        <div className="border-t bg-white p-3">
           <AddChatDialog leadId={lead.id} repFirstName={rep?.name.split(' ')[0] ?? ''} prevTag={a?.tag ?? null} />
         </div>
       </SheetContent>
