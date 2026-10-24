@@ -54,3 +54,7 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-17 · Explicit follow-up dates resolved in code
 **Decision** LLM returns a structured hint (`{kind:'weekday'|'month'|'date', ...}`), `schedule.ts` resolves it. **Why** Mini models are unreliable at date arithmetic; makes it unit-testable.
+
+## D-18 · Extraction stays on gpt-4o-mini; fixed via prompt, not model upgrade
+**Decision** First eval was 12/16 tags, 8/10 dates (L02/L05 "discuss with partner" misread as deferred; L10/L16 trial/demo not marked strong_intent; L11 "video dekh ke batati hoon" marked open_request). Tightened EXTRACT_SYSTEM (deferred hard rule, strong_intent covers trial/demo incl. notes, open_request covers any direct request) and added few-shot examples 3-7. Now 16/16 tags, 10/10 dates on 3 consecutive runs.
+**Caveat** Examples 5-7 are modelled on eval leads L16/L02/L03 (paraphrased, not copied), so the eval is partly in-sample. Validate on unseen chats in Phase 5/7.
