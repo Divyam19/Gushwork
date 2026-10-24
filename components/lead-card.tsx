@@ -1,4 +1,4 @@
-import { AlertTriangleIcon, ChevronRightIcon } from 'lucide-react';
+import { AlertTriangleIcon } from 'lucide-react';
 import Link from 'next/link';
 import { RepAvatar } from '@/components/rep-avatar';
 import { TAG_THEME, initials } from '@/components/tag-theme';
@@ -8,10 +8,13 @@ import { dueLabel, type QueueItem } from '@/lib/queue';
 import type { MockRep } from '@/lib/mock';
 import { cn } from '@/lib/utils';
 
+// Shared by the table header and rows so columns line up.
+export const COLS = 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 md:grid-cols-[minmax(180px,1.1fr)_76px_minmax(0,2fr)_110px] lg:grid-cols-[minmax(200px,1.1fr)_76px_minmax(0,2fr)_110px_120px]';
+
 export function LeadCard({
-  item, today, rep, showRep, beam, faded, rest,
+  item, today, rep, beam, faded, rest,
 }: {
-  item: QueueItem; today: string; rep: MockRep | undefined; showRep: boolean; beam?: boolean; faded?: boolean; rest: string;
+  item: QueueItem; today: string; rep: MockRep | undefined; beam?: boolean; faded?: boolean; rest: string;
 }) {
   const a = item.analysis!;
   const due = dueLabel(a.next_followup_date, today);
@@ -23,37 +26,40 @@ export function LeadCard({
       : due.text === 'Due today'
         ? 'bg-sky-50 text-sky-700 ring-sky-200'
         : 'bg-zinc-50 text-zinc-600 ring-zinc-200';
+  const reason = a.status === 'analyzing' ? <Skeleton className="h-3.5 w-56" aria-label="Agent is updating" /> : a.reason;
   return (
     <Link
       href={href}
       scroll={false}
       className={cn(
-        'group relative flex items-center gap-3 px-4 py-3 transition-colors hover:bg-zinc-50/80 focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
+        COLS,
+        'relative px-4 py-2.5 text-sm transition-colors hover:bg-indigo-50/40 focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
         faded && 'opacity-70',
       )}
     >
-      <span
-        className={cn('flex size-9 shrink-0 items-center justify-center rounded-xl text-xs font-bold shadow-xs', TAG_THEME[a.tag].avatar)}
-        title={`${a.tag} · score ${a.score}`}
-        role="img"
-        aria-label={`${a.tag} lead`}
-      >
-        {initials(item.name)}
+      <span className="flex min-w-0 items-center gap-3">
+        <span className={cn('flex size-8 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold', TAG_THEME[a.tag].avatar)} aria-hidden>
+          {initials(item.name)}
+        </span>
+        <span className="min-w-0">
+          <span className="block truncate font-semibold text-zinc-900">{item.name}</span>
+          <span className="block truncate text-xs text-zinc-500">{item.company}</span>
+          <span className="block truncate text-xs text-zinc-500 md:hidden">{reason}</span>
+        </span>
       </span>
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-zinc-900">
-          {item.name} <span className="font-normal text-zinc-500">· {item.company}</span>
-        </p>
-        {a.status === 'analyzing' ? (
-          <Skeleton className="mt-1 h-3.5 w-56" aria-label="Agent is updating" />
-        ) : (
-          <p className="truncate text-[13px] text-zinc-500">{a.reason}</p>
-        )}
-      </div>
-      {a.status === 'error' && <AlertTriangleIcon className="size-4 shrink-0 text-amber-600" aria-label={a.error ?? 'Analysis failed'} />}
-      <span className={cn('shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium tabular-nums ring-1', dueTone)}>{faded ? 'Sent' : due.text}</span>
-      {showRep && rep && <RepAvatar rep={rep} size="sm" className="hidden sm:flex" />}
-      <ChevronRightIcon className="hidden size-4 shrink-0 text-zinc-300 transition group-hover:translate-x-0.5 group-hover:text-zinc-500 sm:block" />
+      <span className="hidden md:block">
+        <span className={cn('rounded-full px-2 py-0.5 text-xs font-semibold', TAG_THEME[a.tag].pill)} title={`Score ${a.score}`}>{a.tag}</span>
+      </span>
+      <span className="hidden min-w-0 items-center gap-1.5 text-zinc-600 md:flex">
+        {a.status === 'error' && <AlertTriangleIcon className="size-4 shrink-0 text-amber-600" aria-label={a.error ?? 'Analysis failed'} />}
+        <span className="truncate">{reason}</span>
+      </span>
+      <span>
+        <span className={cn('whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium tabular-nums ring-1', dueTone)}>{faded ? 'Sent' : due.text}</span>
+      </span>
+      <span className="hidden min-w-0 items-center gap-2 text-zinc-600 lg:flex">
+        {rep && <><RepAvatar rep={rep} size="sm" /><span className="truncate">{rep.name.split(' ')[0]}</span></>}
+      </span>
       {beam && <BorderBeam size={100} duration={8} colorFrom="#f43f5e" colorTo="#6366f1" />}
     </Link>
   );

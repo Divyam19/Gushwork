@@ -1,13 +1,20 @@
 import { Suspense } from 'react';
 import { Header } from '@/components/header';
-import { LeadList } from '@/components/lead-list';
-import { TodayHero } from '@/components/stats-row';
+import { LeadTable } from '@/components/lead-list';
 import { Skeleton } from '@/components/ui/skeleton';
+import { VIEWS, ViewNav, viewCount, type ViewId } from '@/components/view-nav';
 import { greetingIST, longDateIST, todayIST } from '@/lib/dates';
 import { AutoRefresh } from '@/components/auto-refresh';
 import { LeadSheet } from '@/components/lead-sheet';
 import { getLeadDetail, getQueueItems, getReps } from '@/lib/leads';
 import { buildQueue } from '@/lib/queue';
+
+const HINT: Record<ViewId, string> = {
+  overdue: 'Hottest first, then most late',
+  today: 'Hottest first',
+  upcoming: 'Soonest first',
+  done: 'Sent today, newest first',
+};
 
 async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searchParams'] }) {
   const sp = await searchParams;
@@ -16,25 +23,33 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
   const rep = reps.some((r) => r.id === repParam) ? repParam : null;
   const today = todayIST();
   const q = buildQueue(items, today, rep);
+  const viewParam = VIEWS.find((v) => v.id === sp.view)?.id ?? null;
+  const view: ViewId = viewParam ?? (q.overdue.length ? 'overdue' : 'today');
   const leadParam = typeof sp.lead === 'string' ? sp.lead : null;
   const detail = leadParam ? await getLeadDetail(leadParam) : null;
-  const rest = rep ? `rep=${rep}` : '';
+  const qs = (v: ViewId | null) => [rep && `rep=${rep}`, v && `view=${v}`].filter(Boolean).join('&');
+  const rest = qs(viewParam);
   const who = reps.find((r) => r.id === rep)?.name.split(' ')[0];
-  const greeting = `${greetingIST()}${who ? `, ${who}` : ''}`;
-  const next = q.overdue[0] ?? q.dueToday[0] ?? null;
+  const meta = VIEWS.find((v) => v.id === view)!;
 
   return (
     <>
-      <Header reps={reps} rep={rep} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
-      <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 py-6 sm:px-6">
-        <TodayHero
-          stats={q.stats}
-          date={longDateIST()}
-          greeting={greeting}
-          next={next}
-          nextHref={next ? `/?${rest}${rest ? '&' : ''}lead=${next.id}` : null}
-        />
-        <LeadList q={q} ctx={{ reps, today, showRep: !rep, rest, mostUrgentId: q.mostUrgentId }} />
+      <Header reps={reps} rep={rep} view={viewParam} rest={rest} leads={items.map((i) => ({ id: i.id, name: i.name, company: i.company, phone: i.phone, tag: i.analysis?.tag ?? null }))} />
+      <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-[236px_minmax(0,1fr)] md:grid-rows-[minmax(0,1fr)]">
+        <ViewNav q={q} view={view} href={(v) => `/?${qs(v)}`} />
+        <section className="flex min-h-0 flex-col gap-3 p-3 md:p-5">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h1 className="flex items-center gap-2 text-lg font-semibold tracking-tight text-zinc-900">
+                {meta.label}
+                <span className={`rounded-full px-2 py-px text-xs font-semibold tabular-nums ${meta.badge}`}>{viewCount(q, view)}</span>
+              </h1>
+              <p className="text-xs text-zinc-500">{HINT[view]}</p>
+            </div>
+            <p className="text-xs text-zinc-500">{greetingIST()}{who ? `, ${who}` : ''} · {longDateIST()}</p>
+          </div>
+          <LeadTable q={q} view={view} ctx={{ reps, today, rest, mostUrgentId: q.mostUrgentId }} />
+        </section>
       </div>
       {items.some((i) => i.analysis?.status === 'analyzing') && <AutoRefresh />}
       {detail && <LeadSheet detail={detail} rep={reps.find((r) => r.id === detail.lead.rep_id)} today={today} closeHref={rest ? `/?${rest}` : '/'} />}
@@ -45,10 +60,15 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
 function DashboardSkeleton() {
   return (
     <>
-      <div className="h-[57px] border-b bg-white" />
-      <div className="mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 py-6 sm:px-6">
-        <Skeleton className="h-52 rounded-3xl" />
-        <Skeleton className="h-80 rounded-2xl" />
+      <div className="h-[53px] shrink-0 border-b bg-white" />
+      <div className="grid flex-1 grid-cols-1 md:grid-cols-[236px_minmax(0,1fr)]">
+        <div className="hidden flex-col gap-2 border-r p-4 md:flex">
+          {[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-9 rounded-lg" />)}
+        </div>
+        <div className="flex flex-col gap-3 p-5">
+          <Skeleton className="h-10 w-48" />
+          <Skeleton className="h-96 rounded-xl" />
+        </div>
       </div>
     </>
   );
@@ -56,7 +76,7 @@ function DashboardSkeleton() {
 
 export default function Home({ searchParams }: PageProps<'/'>) {
   return (
-    <main className="flex w-full flex-1 flex-col">
+    <main className="flex w-full flex-1 flex-col md:h-dvh md:min-h-0 md:flex-none md:overflow-hidden">
       <Suspense fallback={<DashboardSkeleton />}>
         <Dashboard searchParams={searchParams} />
       </Suspense>
