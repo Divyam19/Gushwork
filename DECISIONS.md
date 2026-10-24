@@ -76,3 +76,9 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-24 · Mark as sent closes the sheet; re-analysis runs via `after()`
 **Decision** `/api/leads/[id]/send` logs the message, marks sent, then re-runs the agent in `after()` so the response is instant. The dashboard auto-refreshes every 3s while any lead is `analyzing`. The sheet closes on send (card shows in Done today).
+
+## D-25 · Native `<select>` for source/rep in Add lead
+**Decision** Styled native selects instead of shadcn Select. **Why** Better on phones (reps use mobile), fully accessible, no Base UI Select quirks. PRD §8 lists `select`; behaviour is identical.
+
+## D-26 · WhatsApp parsing runs client-side; server trusts a validated messages array
+**Decision** `lib/whatsapp-parser.ts` is pure and runs in the dialogs so the rep sees a parsed preview before saving; routes validate `{sender,text,sent_at}` with zod. Timestamps in exports are treated as IST; media and system lines are skipped and counted. Failed analysis on Add lead keeps the lead (saved, shown without analysis) and toasts the error.

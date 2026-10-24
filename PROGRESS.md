@@ -9,6 +9,6 @@ Start date: Sat 2026-10-24. Deadline: 36h from receipt.
 - [x] Phase 2: seed.ts (+ lib/seed.ts, frozen fixture mock-data/seed-analyses.json); 25 leads, 52 msgs, 25 analyses verified in Supabase
 - [x] Phase 3: lib/queue.ts (+tests), dashboard (header, rep switcher, stats, lead cards, sections); lead cards link to ?lead=ID, Sheet is Phase 4
 - [x] Phase 4: lead sheet (why chips, chat, draft editor w/ autosave, Mark as sent, Copy, Regenerate, pending_draft prompt; send/draft/analyze routes). "+ Add chat" button lands in Phase 5
-- [ ] Phase 5: add lead / add chat + parser
+- [x] Phase 5: add lead + add chat dialogs, lib/whatsapp-parser.ts (+5 tests), POST /api/leads and /api/leads/[id]/messages (smoke-tested)
 - [ ] Phase 6: polish, Cmd+K, cron
 - [ ] Phase 7: ship, smoke test, README, NOTE.md, video

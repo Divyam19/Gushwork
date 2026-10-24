@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { AddChatDialog } from '@/components/add-chat-dialog';
 import { AutoRefresh } from '@/components/auto-refresh';
 import { ChatThread } from '@/components/chat-thread';
 import { DraftEditor } from '@/components/draft-editor';
@@ -96,6 +97,9 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
             </section>
           </div>
         </ScrollArea>
+        <div className="border-t p-3">
+          <AddChatDialog leadId={lead.id} repFirstName={rep?.name.split(' ')[0] ?? ''} prevTag={a?.tag ?? null} />
+        </div>
       </SheetContent>
     </Sheet>
   );

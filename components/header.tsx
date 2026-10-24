@@ -1,5 +1,6 @@
 import { formatInTimeZone } from 'date-fns-tz';
 import { PackageIcon } from 'lucide-react';
+import { AddLeadDialog } from '@/components/add-lead-dialog';
 import { RepSwitcher } from '@/components/rep-switcher';
 import { TZ } from '@/lib/dates';
 import type { MockRep } from '@/lib/mock';
@@ -16,7 +17,10 @@ export function Header({ reps, rep }: { reps: MockRep[]; rep: string | null }) {
           <p className="text-sm text-muted-foreground">{formatInTimeZone(new Date(), TZ, 'EEEE, d MMM')}</p>
         </div>
       </div>
-      <RepSwitcher reps={reps} selected={rep} />
+      <div className="flex items-center gap-3">
+        <RepSwitcher reps={reps} selected={rep} />
+        <AddLeadDialog reps={reps} rep={rep} />
+      </div>
     </header>
   );
 }
