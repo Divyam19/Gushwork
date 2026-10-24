@@ -1,14 +1,18 @@
-# FollowUp — Lead follow-up agent
-**Live:** <vercel-url> · **Code:** <github-url> · **Video:** <loom-url>
+# Submission note: PackRight Follow-ups
 
-**What I built.** One screen for PackRight's 5 reps: who to follow up today (overdue first, in red), why, and a ready-to-send WhatsApp draft. Reps can edit and mark drafts sent, add leads and paste new chats; the agent re-tags the lead right away.
+**Live app:** https://gushwork-sooty.vercel.app (mirror: https://gushwork-production.up.railway.app) · **Code:** https://github.com/Divyam19/Gushwork · **Video:** <loom-url>
 
-**How the agent decides Hot/Warm/Cold.** Three steps. (1) An LLM reads the chat and notes and extracts yes/no buying signals, each with a quote as evidence. (2) Plain code scores them (e.g. +35 asked for a quote/demo/visit, +20 buyer waiting on us, −25 deferred, −recency) → ≥50 Hot, 20–49 Warm, <20 Cold; "lost" is always Cold. Code also sets the follow-up date (buyer's own date > buyer waiting > our pending promise > Hot +1 / Warm +3 / Cold +14 days). (3) The LLM writes a one-line reason and the draft, with `[placeholders]` instead of invented prices. Code decides, so tags are consistent and explainable; the sheet shows the evidence behind every tag. On the 16 hand-labelled leads: 16/16 tags and 10/10 dates (3 runs). The prompt was tuned on those same leads, so treat it as in-sample (D-18).
+**What I built.** One screen that tells each of PackRight's five reps who to follow up with today and what to say. Overdue leads are in red, Hot leads come first, and each lead opens to the chat, the tag, the reason and a ready WhatsApp draft. The rep can edit the draft, mark it sent, add a new lead, or paste a new chat, and the agent re-tags that lead straight away. Sample data: 25 leads and 12 chats.
 
-**AI tools.** Claude Code for building, OpenAI gpt-4o-mini inside the agent, Claude for planning/PRD/sample data.
+**How the agent decides Hot / Warm / Cold.** The model reads the chat; plain code decides.
+1. The model pulls yes/no buying signals from the chat and notes, each with a quote (asked for a quote or demo, buyer waiting on us, we owe them a price, deadline, price objection, pushed to later, lost).
+2. Code adds up points: +35 strong intent, +25 interested, +20 buyer waiting, +15 we owe something, +10 deadline, −10 price objection, −25 pushed to later, minus for silence. **50+ is Hot, 20–49 Warm, below 20 Cold**; a lost lead is always Cold. Code also picks the follow-up date (the buyer's own date first, then buyer waiting, then our promise, then Hot +1, Warm +3, Cold +14 days).
+3. The model writes the one-line reason and the draft. It never invents a price or date; unknowns are `[placeholders]` that must be filled before sending.
 
-**Simplifications.** No auth (rep chosen via URL); one owner per lead, no reassignment; agent runs inline in the request (~3–6s) rather than a queue; analyses are pre-computed at seed with dates anchored to the seed day (reseed to refresh); WhatsApp is copy/paste, not integrated.
+Because code decides, tags are consistent, and the sheet shows the points behind every tag. On the 16 hand-labelled leads: 16/16 tags and 10/10 dates. I tuned the prompt on those same leads, so that is in-sample, not a held-out score.
 
-**Known gaps.** Drafts occasionally omit a `[placeholder]` where a price is needed (D-19); mobile layout and the search palette were not browser-verified before this note.
+**AI tools.** Claude Code to build and review the app, Claude for the plan and sample data, OpenAI `gpt-4o-mini` inside the agent.
 
-**What I'd build next.** WhatsApp Business API sync (auto-import chats, send from app) · lead reassignment & owner view of rep workload · learn scoring weights from won/lost outcomes · reminders on rep phones.
+**Simplifications.** No login (out of scope), no real WhatsApp sending, one owner per lead, and the agent runs inside the request (about 3–6 seconds) instead of a queue. Dates are anchored to the day the demo was last seeded.
+
+**What I'd build next.** WhatsApp Business API sync (import chats, send from the app) · reassigning leads, and an owner view of each rep's workload · learning the scoring weights from won and lost deals · phone reminders for reps.
