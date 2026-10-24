@@ -1,6 +1,5 @@
 # AGENTS.md
-Read PRD.md, then PROGRESS.md, then DECISIONS.md before doing anything.
-Continue from the first unticked item in PROGRESS.md.
+Read README.md, NOTE.md, then DECISIONS.md before doing anything.
 
 ## Stack
 Next.js (App Router, TS) · Tailwind v4 · shadcn/ui (+ Magic UI: number-ticker, shimmer-button, border-beam only) · Supabase (server-side only, service key) · OpenAI (OPENAI_MODEL) · zod · date-fns-tz (Asia/Kolkata) · vitest · pnpm
@@ -9,15 +8,14 @@ Next.js (App Router, TS) · Tailwind v4 · shadcn/ui (+ Magic UI: number-ticker,
 pnpm dev | pnpm build | pnpm test | pnpm seed | pnpm eval | pnpm lint
 
 ## Rules
-- Scope is locked by PRD §3. Do not add features. Ideas → NOTE.md "What I'd build next".
+- Scope is locked to the assignment (see NOTE.md). Do not add features. Ideas → NOTE.md "What I'd build next".
 - Tags are decided by code (lib/agent/score.ts), never by the LLM.
 - Never let the LLM invent prices/dates; placeholders in [brackets].
 - All "today" logic goes through lib/dates.ts (IST).
 - Supabase service key is server-only. Never import lib/db.ts in client components.
 - Any choice between options → append to DECISIONS.md.
-- After each phase: run pnpm test && pnpm build, tick PROGRESS.md, commit.
+- After each change: run pnpm test && pnpm build, commit.
 - Small commits with clear messages.
-- PRD amendments: DECISIONS.md D-11..D-15 override PRD §6.3 / §5 / §7.4 where they conflict.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
