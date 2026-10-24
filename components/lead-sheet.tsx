@@ -1,6 +1,7 @@
 'use client';
 
-import { CalendarClockIcon, MapPinIcon, MessagesSquareIcon, PhoneIcon, SparklesIcon, TagIcon } from 'lucide-react';
+import { formatInTimeZone } from 'date-fns-tz';
+import { CalendarClockIcon, CheckCircle2Icon, MapPinIcon, MessagesSquareIcon, PhoneIcon, SparklesIcon, TagIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, type ReactNode } from 'react';
 import { toast } from 'sonner';
@@ -12,7 +13,7 @@ import { RepAvatar } from '@/components/rep-avatar';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
-import { dayLabel } from '@/lib/dates';
+import { TZ, dayLabel, istDate } from '@/lib/dates';
 import type { LeadDetail } from '@/lib/leads';
 import type { MockRep } from '@/lib/mock';
 import { dueLabel } from '@/lib/queue';
@@ -92,6 +93,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
   const close = () => router.push(closeHref, { scroll: false });
   const due = a ? dueLabel(a.next_followup_date, today) : null;
   const analyzing = a?.status === 'analyzing';
+  const sentToday = !!a?.sent_at && istDate(a.sent_at) === today;
   const theme = a ? TAG_THEME[a.tag] : null;
 
   return (
@@ -159,20 +161,37 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
                   {analyzing ? <Skeleton className="h-5 w-full" /> : <p className="text-[15px] font-medium leading-snug text-zinc-900">{a.reason}</p>}
                 </Step>
 
-                <Step n={2} icon={<SparklesIcon />} title="Send this" className="border-indigo-200 bg-gradient-to-b from-indigo-50 to-white">
-                  {analyzing ? (
-                    <Skeleton className="h-32 w-full" />
-                  ) : (
-                    <DraftEditor
-                      key={`${lead.id}:${a.draft_status}:${a.draft}:${a.pending_draft ?? ''}`}
-                      leadId={lead.id}
-                      firstName={lead.name.split(' ')[0]}
-                      initial={a.draft}
-                      pending={a.pending_draft}
-                      onSent={close}
-                    />
-                  )}
-                </Step>
+                {sentToday ? (
+                  <Step n={2} icon={<CheckCircle2Icon />} title="Sent" className="border-emerald-200 bg-gradient-to-b from-emerald-50 to-white" aside={<span className="text-xs font-medium text-emerald-700">{formatInTimeZone(a.sent_at!, TZ, 'h:mm a')}</span>}>
+                    <p className="text-sm font-medium text-emerald-900">Message sent and logged in the conversation below.</p>
+                    <p className="text-xs text-zinc-500">Next follow-up: <b className="font-semibold text-zinc-700">{dayLabel(a.next_followup_date)}</b></p>
+                    <details className="group">
+                      <summary className="cursor-pointer list-none text-xs font-medium text-primary select-none hover:underline [&::-webkit-details-marker]:hidden">Write another message ›</summary>
+                      <div className="mt-3">
+                        {analyzing ? (
+                          <Skeleton className="h-32 w-full" />
+                        ) : (
+                          <DraftEditor key={`${lead.id}:${a.draft_status}:${a.draft}:${a.pending_draft ?? ''}`} leadId={lead.id} firstName={lead.name.split(' ')[0]} initial={a.draft} pending={a.pending_draft} onSent={close} />
+                        )}
+                      </div>
+                    </details>
+                  </Step>
+                ) : (
+                  <Step n={2} icon={<SparklesIcon />} title="Send this" className="border-indigo-200 bg-gradient-to-b from-indigo-50 to-white">
+                    {analyzing ? (
+                      <Skeleton className="h-32 w-full" />
+                    ) : (
+                      <DraftEditor
+                        key={`${lead.id}:${a.draft_status}:${a.draft}:${a.pending_draft ?? ''}`}
+                        leadId={lead.id}
+                        firstName={lead.name.split(' ')[0]}
+                        initial={a.draft}
+                        pending={a.pending_draft}
+                        onSent={close}
+                      />
+                    )}
+                  </Step>
+                )}
               </>
             ) : (
               <p className="rounded-2xl border border-dashed bg-white p-4 text-sm text-muted-foreground">This lead hasn&apos;t been analysed yet.</p>

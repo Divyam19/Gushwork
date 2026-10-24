@@ -31,7 +31,7 @@ export interface LeadDetail {
   messages: { id: string; sender: 'rep' | 'buyer'; text: string; sent_at: string }[];
   analysis: {
     tag: Tag; score: number; reason: string; next_followup_date: string; draft: string;
-    draft_status: 'pending' | 'sent'; pending_draft: string | null; status: 'ready' | 'analyzing' | 'error';
+    draft_status: 'pending' | 'sent'; sent_at: string | null; pending_draft: string | null; status: 'ready' | 'analyzing' | 'error';
     error: string | null; points: { label: string; pts: number }[];
   } | null;
 }
@@ -50,7 +50,7 @@ export async function getLeadDetail(id: string): Promise<LeadDetail | null> {
     analysis: a
       ? {
           tag: a.tag, score: a.score, reason: a.reason, next_followup_date: a.next_followup_date, draft: a.draft,
-          draft_status: a.draft_status, pending_draft: a.pending_draft, status: a.status, error: a.error,
+          draft_status: a.draft_status, sent_at: a.sent_at, pending_draft: a.pending_draft, status: a.status, error: a.error,
           points: a.signals?.computed?.points ?? [],
         }
       : null,
