@@ -16,7 +16,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { HOT_AT, WARM_AT } from '@/lib/agent/score';
 import { TZ, dayLabel } from '@/lib/dates';
 import type { LeadDetail } from '@/lib/leads';
-import { dueLabel, isSentToday } from '@/lib/queue';
+import { dueLabel, handledAt } from '@/lib/queue';
 import type { Rep, Tag } from '@/lib/schemas';
 import { cn } from '@/lib/utils';
 import { TAG_THEME, initials } from '@/components/tag-theme';
@@ -105,7 +105,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
   const close = () => setOpen(false);
   const due = a ? dueLabel(a.next_followup_date, today) : null;
   const analyzing = a?.status === 'analyzing';
-  const sentToday = isSentToday(a, today);
+  const repliedAt = handledAt(messages, today);
   const theme = a ? TAG_THEME[a.tag] : null;
 
   return (
@@ -172,9 +172,9 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
                   {analyzing ? <Skeleton className="h-5 w-full" /> : <p className="text-[15px] font-medium leading-snug text-zinc-900">{a.reason}</p>}
                 </Step>
 
-                {sentToday ? (
-                  <Step n={2} icon={<CheckCircle2Icon />} title="Sent" className="anim-pop border-emerald-200 bg-gradient-to-b from-emerald-50 to-white" aside={<span className="text-xs font-medium text-emerald-700">{formatInTimeZone(a.sent_at!, TZ, 'h:mm a')}</span>}>
-                    <p className="text-sm font-medium text-emerald-900">Message sent and logged in the conversation below.</p>
+                {repliedAt ? (
+                  <Step n={2} icon={<CheckCircle2Icon />} title="Replied" className="anim-pop border-emerald-200 bg-gradient-to-b from-emerald-50 to-white" aside={<span className="text-xs font-medium text-emerald-700">{formatInTimeZone(repliedAt, TZ, 'h:mm a')}</span>}>
+                    <p className="text-sm font-medium text-emerald-900">You replied today. It&apos;s logged in the conversation below.</p>
                     <p className="text-xs text-zinc-500">Next follow-up: <b className="font-semibold text-zinc-700">{dayLabel(a.next_followup_date)}</b></p>
                     <details className="group">
                       <summary className="cursor-pointer list-none text-xs font-medium text-primary select-none hover:underline [&::-webkit-details-marker]:hidden">Write another message ›</summary>

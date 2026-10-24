@@ -1,7 +1,11 @@
 import { addDays, dayLabel, diffDays, istDate } from './dates';
-import type { AnalysisRow, LeadRow, Tag } from './schemas';
+import type { AnalysisRow, LeadRow, Sender, Tag } from './schemas';
+
+export interface ChatStamp { sender: Sender; sent_at: string }
 
 export interface QueueItem extends Omit<LeadRow, 'notes'> {
+  /** The lead's newest few messages (any order). Enough to tell who spoke last. */
+  recent: ChatStamp[];
   analysis: Pick<AnalysisRow, 'tag' | 'score' | 'reason' | 'next_followup_date' | 'draft_status' | 'sent_at' | 'status' | 'error'> | null;
 }
 
@@ -19,13 +23,23 @@ const TAG_RANK: Record<Tag, number> = { Hot: 0, Warm: 1, Cold: 2 };
 
 type Analysed = QueueItem & { analysis: NonNullable<QueueItem['analysis']> };
 
-/** Sent today (IST). Puts a lead in Done today and makes the sheet show its Sent card. */
-export const isSentToday = (a: Pick<AnalysisRow, 'sent_at'> | null | undefined, today: string) =>
-  !!a?.sent_at && istDate(a.sent_at) === today;
+/**
+ * When the rep handled this lead today, else null. Handled = the newest message is the rep's and is dated
+ * today (IST), however it got in (Mark as sent, Add chat, a pasted export). If a buyer message shares the
+ * newest timestamp, the buyer may be waiting, so it does not count. Message time decides, not insert order.
+ */
+export function handledAt(messages: ChatStamp[], today: string): string | null {
+  if (!messages.length) return null;
+  const newest = Math.max(...messages.map((m) => Date.parse(m.sent_at)));
+  const top = messages.filter((m) => Date.parse(m.sent_at) === newest);
+  if (top.some((m) => m.sender === 'buyer')) return null;
+  return istDate(top[0].sent_at) === today ? top[0].sent_at : null;
+}
 
 export function buildQueue(items: QueueItem[], today: string, rep: string | null): Queue {
   const scoped = items.filter((i): i is Analysed => !!i.analysis && (!rep || i.rep_id === rep));
-  const sentToday = (i: Analysed) => isSentToday(i.analysis, today);
+  const handled = new Map(scoped.map((i) => [i.id, handledAt(i.recent, today)]));
+  const sentToday = (i: Analysed) => handled.get(i.id) != null;
   const next = (i: Analysed) => i.analysis.next_followup_date;
   const byTag = (a: Analysed, b: Analysed) => TAG_RANK[a.analysis.tag] - TAG_RANK[b.analysis.tag];
   const byScore = (a: Analysed, b: Analysed) => b.analysis.score - a.analysis.score;
@@ -47,7 +61,7 @@ export function buildQueue(items: QueueItem[], today: string, rep: string | null
     dueToday,
     upcomingWeek: upcoming.filter((i) => next(i) <= horizon),
     upcomingLater: upcoming.filter((i) => next(i) > horizon),
-    doneToday: doneToday.sort((a, b) => b.analysis.sent_at!.localeCompare(a.analysis.sent_at!)),
+    doneToday: doneToday.sort((a, b) => Date.parse(handled.get(b.id)!) - Date.parse(handled.get(a.id)!)),
     stats: {
       overdue: overdue.length,
       dueToday: dueToday.length,

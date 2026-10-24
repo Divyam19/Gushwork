@@ -39,7 +39,11 @@ export const lastContactOf = (messages: Message[], fallback: string) =>
   messages.length ? istDate(messages[messages.length - 1].sent_at) : fallback;
 
 /** Re-analyse one lead from the DB. step 'write' re-runs only reason+draft using stored signals. */
-export async function analyzeLead(leadId: string, opts: { step?: 'full' | 'write' } = {}) {
+/**
+ * opts.draftConsumed: the rep has just replied outside Mark as sent (e.g. Add chat), so the current draft is
+ * spent. Replace it rather than keeping an edited draft and offering the new one as pending (D-14).
+ */
+export async function analyzeLead(leadId: string, opts: { step?: 'full' | 'write'; draftConsumed?: boolean } = {}) {
   const sb = db();
   const [{ data: lead }, { data: msgs }, { data: existing }] = await Promise.all([
     sb.from('leads').select('*, reps:rep_id(name)').eq('id', leadId).single(),
@@ -67,6 +71,7 @@ export async function analyzeLead(leadId: string, opts: { step?: 'full' | 'write
 
   const wasEdited =
     opts.step !== 'write' &&
+    !opts.draftConsumed &&
     existing?.draft_status === 'pending' &&
     existing.draft !== (existing.signals as { generated_draft?: string }).generated_draft;
 

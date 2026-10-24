@@ -106,7 +106,7 @@ export function ViewNav({ q, view, rep, allHref }: { q: Queue; view: ViewId; rep
         <div className="mt-2 flex items-center gap-3">
           <Ring done={stats.sentToday} total={total} />
           <div className="text-sm leading-tight">
-            <p className="font-semibold text-zinc-900 tabular-nums">{stats.sentToday} of {total} sent</p>
+            <p className="font-semibold text-zinc-900 tabular-nums">{stats.sentToday} of {total} replied</p>
             <p className="mt-0.5 flex items-center gap-1 text-xs text-zinc-500">
               <FlameIcon className="size-3 text-rose-500" /> {stats.hot} hot lead{stats.hot === 1 ? '' : 's'}
             </p>

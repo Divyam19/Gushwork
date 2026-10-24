@@ -59,7 +59,7 @@ export function LeadCard({
         <span className="truncate">{reason}</span>
       </span>
       <span>
-        <span className={cn('whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium tabular-nums ring-1', dueTone)}>{faded ? 'Sent' : due.text}</span>
+        <span className={cn('whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium tabular-nums ring-1', dueTone)}>{faded ? 'Replied' : due.text}</span>
       </span>
       <span className="hidden min-w-0 items-center gap-2 text-zinc-600 lg:flex">
         {rep && <><RepAvatar rep={rep} size="sm" /><span className="truncate">{rep.name.split(' ')[0]}</span></>}

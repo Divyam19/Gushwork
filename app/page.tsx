@@ -15,7 +15,7 @@ const HINT: Record<ViewId, string> = {
   overdue: 'Hottest first, then most late',
   today: 'Hottest first',
   upcoming: 'Soonest first',
-  done: 'Sent today, newest first',
+  done: 'Replied today, newest first',
 };
 
 async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searchParams'] }) {

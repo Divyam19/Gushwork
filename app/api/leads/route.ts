@@ -21,7 +21,7 @@ const Body = z.object({
 
 export async function POST(req: Request) {
   const body = Body.safeParse(await req.json().catch(() => null));
-  if (!body.success) return Response.json({ error: 'Invalid body' }, { status: 400 });
+  if (!body.success) return Response.json({ error: body.error.issues[0]?.message ?? 'Invalid body' }, { status: 400 });
   const { messages, ...l } = body.data;
   const sb = db();
 

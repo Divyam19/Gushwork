@@ -18,13 +18,17 @@ export async function getQueueItems(): Promise<QueueItem[]> {
     .from('leads')
     .select(
       'id,name,company,phone,city,source,rep_id,product_interest,last_contact_date,' +
-        'analyses(tag,score,reason,next_followup_date,draft_status,sent_at,status,error,analyzed_at)',
-    );
+        'analyses(tag,score,reason,next_followup_date,draft_status,sent_at,status,error,analyzed_at),' +
+        'recent:messages(sender,sent_at)',
+    )
+    // Newest 3 messages per lead: enough for handledAt() to see who spoke last, including a same-minute tie.
+    .order('sent_at', { referencedTable: 'messages', ascending: false })
+    .limit(3, { referencedTable: 'messages' });
   if (error) throw error;
   type Row = Omit<QueueItem, 'analysis'> & { analyses: (QueueItem['analysis'] & { analyzed_at: string | null }) | (QueueItem['analysis'] & { analyzed_at: string | null })[] | null };
   return (data as unknown as Row[]).map(({ analyses, ...l }) => {
     const a = Array.isArray(analyses) ? analyses[0] : analyses;
-    return { ...l, analysis: a ? withEffectiveStatus(a) : null };
+    return { ...l, recent: l.recent ?? [], analysis: a ? withEffectiveStatus(a) : null };
   });
 }
 

@@ -66,7 +66,11 @@ export interface AnalysisRow {
 export const MessageInput = z.object({
   sender: z.enum(['rep', 'buyer']),
   text: z.string().min(1).max(4000),
-  sent_at: z.iso.datetime({ offset: true }).optional(),
+  sent_at: z.iso
+    .datetime({ offset: true })
+    // A future-dated message would count as the newest one and hide the lead's real state.
+    .refine((v) => Date.parse(v) <= Date.now() + 5 * 60_000, 'sent_at is in the future')
+    .optional(),
 });
 export type MessageInput = z.infer<typeof MessageInput>;
 export interface Message {
