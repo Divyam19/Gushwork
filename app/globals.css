@@ -149,3 +149,42 @@
     @apply font-sans;
   }
 }
+/* ---- Motion ---------------------------------------------------------
+   One easing family everywhere: an expo-out for things arriving, so they
+   decelerate into place instead of stopping dead. Springs (via `motion`)
+   handle anything the user's input moves. */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* `backwards` (not `both`) so the end state doesn't pin `transform` and block hover/press styles.
+   Staggered entrance: set `--i` (index) inline; `--d` adds a base delay. */
+.anim-rise {
+  animation: rise 0.55s var(--ease-out-expo) backwards;
+  animation-delay: calc(var(--d, 0ms) + var(--i, 0) * 45ms);
+}
+.anim-fade { animation: fade-in 0.4s ease-out backwards; animation-delay: var(--d, 0ms); }
+.anim-pop { animation: pop 0.5s var(--ease-out-expo) backwards; animation-delay: var(--d, 0ms); }
+
+/* Disclosure content eases open instead of snapping */
+details[open] > .reveal { animation: rise 0.35s var(--ease-out-expo) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-rise, .anim-fade, .anim-pop, details[open] > .reveal { animation: none; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}

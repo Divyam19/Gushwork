@@ -2,14 +2,14 @@ import { COLS, LeadCard } from '@/components/lead-card';
 import { dayLabel } from '@/lib/dates';
 import type { MockRep } from '@/lib/mock';
 import type { Queue, QueueItem } from '@/lib/queue';
-import type { ViewId } from '@/components/view-nav';
+import type { ViewId } from '@/components/views';
 import { cn } from '@/lib/utils';
 
 interface Ctx { reps: MockRep[]; today: string; rest: string; mostUrgentId: string | null }
 
 function Rows({ items, ctx, faded }: { items: QueueItem[]; ctx: Ctx; faded?: boolean }) {
-  return items.map((i) => (
-    <LeadCard key={i.id} item={i} today={ctx.today} rep={ctx.reps.find((r) => r.id === i.rep_id)} rest={ctx.rest} beam={i.id === ctx.mostUrgentId} faded={faded} />
+  return items.map((i, n) => (
+    <LeadCard key={i.id} index={n} item={i} today={ctx.today} rep={ctx.reps.find((r) => r.id === i.rep_id)} rest={ctx.rest} beam={i.id === ctx.mostUrgentId} faded={faded} />
   ));
 }
 
@@ -18,7 +18,7 @@ function Group({ label }: { label: string }) {
 }
 
 function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="px-4 py-16 text-center text-sm text-zinc-500">{children}</p>;
+  return <p className="anim-rise px-4 py-16 text-center text-sm text-zinc-500">{children}</p>;
 }
 
 export function LeadTable({ q, view, ctx }: { q: Queue; view: ViewId; ctx: Ctx }) {
@@ -51,7 +51,7 @@ export function LeadTable({ q, view, ctx }: { q: Queue; view: ViewId; ctx: Ctx }
         <span>Due</span>
         <span className="hidden lg:block">Owner</span>
       </div>
-      <div className="min-h-0 flex-1 divide-y divide-zinc-100 overflow-y-auto">{body}</div>
+      <div key={view} className="min-h-0 flex-1 divide-y divide-zinc-100 overflow-y-auto">{body}</div>
     </div>
   );
 }

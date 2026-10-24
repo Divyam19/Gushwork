@@ -12,9 +12,9 @@ import { cn } from '@/lib/utils';
 export const COLS = 'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 md:grid-cols-[minmax(180px,1.1fr)_76px_minmax(0,2fr)_110px] lg:grid-cols-[minmax(200px,1.1fr)_76px_minmax(0,2fr)_110px_120px]';
 
 export function LeadCard({
-  item, today, rep, beam, faded, rest,
+  item, today, rep, beam, faded, rest, index = 0,
 }: {
-  item: QueueItem; today: string; rep: MockRep | undefined; beam?: boolean; faded?: boolean; rest: string;
+  item: QueueItem; today: string; rep: MockRep | undefined; beam?: boolean; faded?: boolean; rest: string; index?: number;
 }) {
   const a = item.analysis!;
   const due = dueLabel(a.next_followup_date, today);
@@ -31,9 +31,13 @@ export function LeadCard({
     <Link
       href={href}
       scroll={false}
+      // Cap the stagger so long lists don't feel slow to finish.
+      style={{ '--i': Math.min(index, 14) } as React.CSSProperties}
       className={cn(
         COLS,
-        'relative px-4 py-2.5 text-sm transition-colors hover:bg-indigo-50/40 focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
+        'anim-rise relative px-4 py-2.5 text-sm transition-[background-color,transform] duration-200 hover:bg-indigo-50/50 active:scale-[0.995] active:bg-indigo-50',
+        'before:absolute before:inset-y-1.5 before:left-0 before:w-[3px] before:origin-center before:scale-y-0 before:rounded-r-full before:bg-indigo-500 before:transition-transform before:duration-300 before:ease-[var(--ease-out-expo)] hover:before:scale-y-100',
+        'focus-visible:z-10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary',
         faded && 'opacity-70',
       )}
     >
