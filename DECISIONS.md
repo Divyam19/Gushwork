@@ -70,3 +70,9 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-22 · shadcn "base-nova" (Base UI) components
 **Decision** Used the default `shadcn init` style, which builds on Base UI, not Radix. Accordion is uncontrolled and collapsed by default. Magic UI: number-ticker and border-beam only (shimmer-button comes with Phase 4).
+
+## D-23 · Edited-draft detection via `signals.generated_draft`
+**Decision** The agent stores the draft it generated in `analyses.signals.generated_draft`. On re-analysis, if `draft_status='pending'` and `draft` differs from it, the rep edited it, so the new draft goes to `pending_draft` (D-14). Regenerate (`?step=write`) is explicit and overwrites. **Why** No schema change needed. **Rejected** an `edited` boolean column (schema churn).
+
+## D-24 · Mark as sent closes the sheet; re-analysis runs via `after()`
+**Decision** `/api/leads/[id]/send` logs the message, marks sent, then re-runs the agent in `after()` so the response is instant. The dashboard auto-refreshes every 3s while any lead is `analyzing`. The sheet closes on send (card shows in Done today).

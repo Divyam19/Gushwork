@@ -4,7 +4,9 @@ import { LeadList } from '@/components/lead-list';
 import { StatsRow } from '@/components/stats-row';
 import { Skeleton } from '@/components/ui/skeleton';
 import { todayIST } from '@/lib/dates';
-import { getQueueItems, getReps } from '@/lib/leads';
+import { AutoRefresh } from '@/components/auto-refresh';
+import { LeadSheet } from '@/components/lead-sheet';
+import { getLeadDetail, getQueueItems, getReps } from '@/lib/leads';
 import { buildQueue } from '@/lib/queue';
 
 async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searchParams'] }) {
@@ -14,12 +16,17 @@ async function Dashboard({ searchParams }: { searchParams: PageProps<'/'>['searc
   const rep = reps.some((r) => r.id === repParam) ? repParam : null;
   const today = todayIST();
   const q = buildQueue(items, today, rep);
+  const leadParam = typeof sp.lead === 'string' ? sp.lead : null;
+  const detail = leadParam ? await getLeadDetail(leadParam) : null;
+  const rest = rep ? `rep=${rep}` : '';
 
   return (
     <>
       <Header reps={reps} rep={rep} />
       <StatsRow stats={q.stats} />
-      <LeadList q={q} ctx={{ reps, today, showRep: !rep, rest: rep ? `rep=${rep}` : '', mostUrgentId: q.mostUrgentId }} />
+      <LeadList q={q} ctx={{ reps, today, showRep: !rep, rest, mostUrgentId: q.mostUrgentId }} />
+      {items.some((i) => i.analysis?.status === 'analyzing') && <AutoRefresh />}
+      {detail && <LeadSheet detail={detail} rep={reps.find((r) => r.id === detail.lead.rep_id)} today={today} closeHref={rest ? `/?${rest}` : '/'} />}
     </>
   );
 }

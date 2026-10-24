@@ -70,14 +70,20 @@ export async function analyzeLead(leadId: string, opts: { step?: 'full' | 'write
     throw lastErr;
   }
 
+  const wasEdited =
+    opts.step !== 'write' &&
+    existing?.draft_status === 'pending' &&
+    existing.draft !== (existing.signals as { generated_draft?: string }).generated_draft;
+
   const row = {
     lead_id: leadId,
     tag: out.tag,
     score: out.score,
-    signals: { ...out.signals, computed: out.computed },
+    signals: { ...out.signals, computed: out.computed, generated_draft: out.draft },
     reason: out.reason,
     next_followup_date: out.next_followup_date,
-    draft: out.draft,
+    draft: wasEdited ? existing!.draft : out.draft,
+    pending_draft: wasEdited ? out.draft : null,
     draft_status: 'pending',
     status: 'ready',
     error: null,
