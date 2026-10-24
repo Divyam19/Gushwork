@@ -121,3 +121,6 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-39 · No nightly reseed
 **Decision** Removed the `vercel.json` cron. The `/api/cron/reseed` route stays as a manual, secret-protected reset (`pnpm seed` does the same locally). **Why** The nightly wipe erased reviewers' sends and edits ("Done today" emptied); persistence matters more than dates re-anchoring automatically. **Trade-off** Dates are anchored to the last seed, so reseed right before sharing. Supersedes the cron parts of D-05 and D-27.
+
+## D-40 · Delivered promises clear `rep_promise_pending`
+**Decision** After a rep sends the promised price, re-analysis kept `rep_promise_pending` and `price_objection_unresolved` true (Kavita, L07: even a clear "Best price is ₹3,00,000 + GST" left "We owe the best price", Hot). The extract prompt's few-shot Example 1 is that exact chat and anchored the answer. Fixed in the prompt only: the rule now says to read the rep messages after the promise and treat a short or informal delivery as delivered; a new rep price/offer addresses the objection until the buyer pushes back; added Example 8 (Example 1's chat plus the delivered price). Tags are still decided in code. **Check** `pnpm eval` 16/16 tags, 10/10 dates after the change; the L07 + price reply case now returns Warm with no pending promise.

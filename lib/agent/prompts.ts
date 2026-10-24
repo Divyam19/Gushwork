@@ -35,9 +35,9 @@ Signals:
 - strong_intent: buyer asked the final price for a stated quantity, asked for a proforma invoice / PO, asked for a demo / trial / sample test / factory visit, or asked for delivery timing for an order. For leads with no chat, a demo/trial/visit request in the CRM notes makes strong_intent true AND buyer_waiting_no_chat true.
 - medium_intent: buyer asked specs, brochure, video, capacity or general price; OR is considering / discussing internally / comparing options. (Asking a price counts as medium.)
 - open_request: the buyer's LAST message contains a question or request that WE (the rep) still need to answer or act on (e.g. "send price", "can I visit Monday?", "any update?", "send proforma"). Statements like "I'll discuss and revert", "will watch the video and tell you" / "video dekh ke batati hoon", "looks fine", "not now, call later", "thanks" are NOT open requests. If the buyer's last message contains ANY direct request to us ("please send the proforma", "send price", "any update?"), open_request is true even if the same message also says what the buyer will do next. If the last message is from REP, this is false.
-- rep_promise_pending: the rep promised something (price, slot, document, callback) and no later message shows it was delivered.
+- rep_promise_pending: the rep promised something (price, slot, document, callback) and no LATER REP message delivers it. Read the rep messages that come after the promise: if one gives the price, slot, document or answer that was promised, even briefly or informally ("300 per piece", "done, sent on mail"), the promise is delivered and this is false. Only evidence from the most recent undelivered promise counts.
 - time_pressure: buyer mentioned a deadline or urgency: festival, launch date, "this week", "next week", "before Diwali".
-- price_objection_unresolved: buyer said too expensive / competitor cheaper / budget tight AND a later message has not resolved it. If the rep offered a cheaper option and the buyer then reacted positively, it IS resolved (false).
+- price_objection_unresolved: buyer said too expensive / competitor cheaper / budget tight AND a later message has not resolved it. If the rep offered a cheaper option and the buyer then reacted positively, it IS resolved (false). If the rep has since replied with a new price or offer and the buyer has not answered yet, the objection has been addressed (false) until the buyer pushes back again.
 - deferred: buyer explicitly pushed the purchase to a distant later time (next quarter, next year, after monsoon, "contact in January", "budget is tight right now"). HARD RULE: if the buyer says they will discuss with a partner / team / in a meeting and get back, deferred MUST be false (it is active consideration: medium_intent true). Only a stated far-off time or budget freeze counts.
 - lost: not interested / bought elsewhere / already have a vendor / asked not to contact.
 - buyer_waiting_no_chat: ONLY for leads with NO CHAT: the notes show the buyer asked a question or made an enquiry that we haven't answered (e.g. "asked price", "wants a live demo", "asked for brochure"). For leads with a chat, always false.
@@ -97,4 +97,14 @@ CHAT:
 [2026-10-21 14:12 BUYER] Combo price is ok. Will you do installation?
 [2026-10-21 14:30 REP] Yes, free installation is included.
 [2026-10-23 17:50 BUYER] Good. Please send the proforma invoice, we will release the PO next week.
-Output: strong_intent true ("Please send the proforma invoice"); open_request true ("Please send the proforma invoice"); time_pressure true ("release the PO next week"); deferred false; lost false; explicit_followup null; language english.`;
+Output: strong_intent true ("Please send the proforma invoice"); open_request true ("Please send the proforma invoice"); time_pressure true ("release the PO next week"); deferred false; lost false; explicit_followup null; language english.
+
+Example 8 (same chat as Example 1, but the rep has now delivered the promised price):
+CHAT:
+[2026-10-17 10:10 BUYER] Hi, need a vacuum machine with nitrogen flushing for cashew tins and pouches.
+[2026-10-17 10:50 REP] Hello Kavita ma'am, DZ-500 with N2 flushing is ₹3,45,000 + GST.
+[2026-10-19 15:30 BUYER] Another supplier quoted ₹3,10,000 for a similar machine. Can you match?
+[2026-10-19 16:00 REP] Let me check the best price with my manager and revert.
+[2026-10-21 11:45 BUYER] Priya, any update? We need to finalise this week.
+[2026-10-24 10:00 REP] Best price is ₹3,00,000 + GST.
+Output: medium_intent true ("need a vacuum machine with nitrogen flushing"); time_pressure true ("We need to finalise this week"); rep_promise_pending false (the rep's last message delivers the best price); price_objection_unresolved false (the rep answered with a new price; the buyer has not replied yet); open_request false (the last message is from the rep); strong_intent false; deferred false; lost false; explicit_followup null; language english.`;
