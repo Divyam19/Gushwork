@@ -49,29 +49,30 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
             {a ? (
               <>
                 <section className="flex flex-col gap-2">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Why {a.tag}</h3>
-                  {analyzing ? <Skeleton className="h-5 w-full" /> : <p className="text-sm">{a.reason}</p>}
-                  <div className="flex flex-wrap gap-1.5">
-                    {a.points.map((p, i) => (
-                      <span
-                        key={i}
-                        title={p.label}
-                        className={cn(
-                          'rounded-full border px-2 py-0.5 text-xs',
-                          p.pts > 0 ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : p.pts < 0 ? 'border-red-200 bg-red-50 text-red-900' : 'border-zinc-200 bg-zinc-50 text-zinc-600',
-                        )}
-                      >
-                        <b className="tabular-nums">{p.pts > 0 ? '+' : ''}{p.pts}</b> {p.label}
-                      </span>
-                    ))}
-                  </div>
+                  {analyzing ? <Skeleton className="h-5 w-full" /> : <p className="text-base font-medium leading-snug text-zinc-900">{a.reason}</p>}
+                  <p className="text-sm text-zinc-500">
+                    Follow up <span className={cn(due?.overdue && 'font-medium text-red-600')}>{dayLabel(a.next_followup_date)} · {due?.text}</span>
+                  </p>
+                  <details className="group text-sm">
+                    <summary className="cursor-pointer select-none text-xs font-medium text-primary hover:underline">Why {a.tag}? ({a.score} pts)</summary>
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                      {a.points.map((p, i) => (
+                        <span
+                          key={i}
+                          title={p.label}
+                          className={cn(
+                            'rounded-full border px-2 py-0.5 text-xs',
+                            p.pts > 0 ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : p.pts < 0 ? 'border-zinc-300 bg-zinc-100 text-zinc-700' : 'border-zinc-200 bg-zinc-50 text-zinc-600',
+                          )}
+                        >
+                          <b className="tabular-nums">{p.pts > 0 ? '+' : ''}{p.pts}</b> {p.label}
+                        </span>
+                      ))}
+                    </div>
+                  </details>
                 </section>
-                <section className="text-sm">
-                  <h3 className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Next follow-up</h3>
-                  <span className={cn(due?.overdue && 'font-bold text-red-600')}>{dayLabel(a.next_followup_date)} · {due?.text}</span>
-                </section>
-                <section className="flex flex-col gap-2">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Draft message</h3>
+                <section className="flex flex-col gap-2 rounded-xl border bg-zinc-50/60 p-3">
+                  <h3 className="text-xs font-medium text-zinc-500">Suggested message</h3>
                   {analyzing ? (
                     <Skeleton className="h-32 w-full" />
                   ) : (
@@ -91,7 +92,7 @@ export function LeadSheet({ detail, rep, today, closeHref }: { detail: LeadDetai
             )}
             <Separator />
             <section className="flex flex-col gap-2">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Chat</h3>
+              <h3 className="text-xs font-medium text-zinc-500">Conversation</h3>
               <ChatThread messages={messages} notes={lead.notes} />
               <div ref={end} />
             </section>

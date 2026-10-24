@@ -1,9 +1,14 @@
+'use client';
+
+import { useState } from 'react';
 import { formatInTimeZone } from 'date-fns-tz';
 import { TZ, dayLabel, istDate } from '@/lib/dates';
 import { cn } from '@/lib/utils';
 import type { LeadDetail } from '@/lib/leads';
 
 export function ChatThread({ messages, notes }: { messages: LeadDetail['messages']; notes: string | null }) {
+  const [all, setAll] = useState(false);
+  const first = all ? 0 : Math.max(0, messages.length - 3);
   return (
     <div className="flex flex-col gap-2">
       {notes && (
@@ -12,10 +17,16 @@ export function ChatThread({ messages, notes }: { messages: LeadDetail['messages
           {notes}
         </div>
       )}
+      {first > 0 && (
+        <button onClick={() => setAll(true)} className="self-center text-xs font-medium text-primary hover:underline">
+          Show {first} earlier message{first > 1 ? 's' : ''}
+        </button>
+      )}
       {messages.length === 0 && <p className="py-4 text-center text-sm text-muted-foreground">No chat yet.</p>}
       {messages.map((m, idx) => {
+        if (idx < first) return null;
         const day = istDate(m.sent_at);
-        const sep = idx === 0 || day !== istDate(messages[idx - 1].sent_at);
+        const sep = idx === first || day !== istDate(messages[idx - 1].sent_at);
         const rep = m.sender === 'rep';
         return (
           <div key={m.id} className="flex flex-col gap-2">

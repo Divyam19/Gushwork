@@ -70,7 +70,6 @@ export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | nu
           <Field label="Name *"><Input name="name" required /></Field>
           <Field label="Company *"><Input name="company" required /></Field>
           <Field label="Phone *"><Input name="phone" required inputMode="tel" /></Field>
-          <Field label="City"><Input name="city" /></Field>
           <Field label="Source *">
             <select name="source" required className={selectClass} defaultValue="Website">
               {SOURCES.map((s) => <option key={s}>{s}</option>)}
@@ -81,19 +80,25 @@ export function AddLeadDialog({ reps, rep }: { reps: MockRep[]; rep: string | nu
               {reps.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
             </select>
           </Field>
-          <div className="col-span-2"><Field label="Product interest"><Input name="product_interest" /></Field></div>
-          <div className="col-span-2"><Field label="Notes"><Input name="notes" /></Field></div>
-          <div className="col-span-2">
-            <Field label="Paste WhatsApp chat (optional)">
-              <Textarea value={chat} onChange={(e) => setChat(e.target.value)} placeholder="12/10/25, 14:05 - Name: message" className="min-h-20 text-xs" />
-            </Field>
-            {chat.trim() && (
-              <p className="mt-1 text-xs text-muted-foreground">
-                {parsed.messages.length} message{parsed.messages.length === 1 ? '' : 's'} parsed
-                {parsed.skipped > 0 && ` · ${parsed.skipped} line${parsed.skipped === 1 ? '' : 's'} skipped`}
-              </p>
-            )}
-          </div>
+          <details className="col-span-2 group">
+            <summary className="cursor-pointer select-none text-sm font-medium text-primary">More details (optional)</summary>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <Field label="City"><Input name="city" /></Field>
+              <Field label="Product interest"><Input name="product_interest" /></Field>
+              <div className="col-span-2"><Field label="Notes"><Input name="notes" /></Field></div>
+            <div className="col-span-2">
+              <Field label="Paste WhatsApp chat (optional)">
+                <Textarea value={chat} onChange={(e) => setChat(e.target.value)} placeholder="12/10/25, 14:05 - Name: message" className="min-h-20 text-xs" />
+              </Field>
+              {chat.trim() && (
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {parsed.messages.length} message{parsed.messages.length === 1 ? '' : 's'} parsed
+                  {parsed.skipped > 0 && ` · ${parsed.skipped} line${parsed.skipped === 1 ? '' : 's'} skipped`}
+                </p>
+              )}
+            </div>
+            </div>
+          </details>
           <DialogFooter className="col-span-2">
             <Button type="submit" disabled={busy}>{busy ? 'Analysing…' : 'Add and analyse'}</Button>
           </DialogFooter>

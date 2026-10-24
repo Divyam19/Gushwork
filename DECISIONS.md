@@ -91,3 +91,6 @@ Knife-edge leads: L10 (score exactly 50), L11 (exactly 20), L16, L23.
 
 ## D-29 · Write step: buyer-waiting leads get a REQUIRED "answer now, use placeholders" directive
 **Decision** Extends D-19: not just when we owe something, but whenever the buyer is waiting, the draft must answer the open request with a `[placeholder]` for unknown price/date. **Why** Smoke test on L12 (new chat "send updated price, 3 machines") produced drafts that ignored or deferred the request. **Caveat** The frozen seed fixture drafts predate this; run `pnpm seed --refresh` to regenerate them (costs ~25 LLM calls).
+
+## D-30 · UI declutter pass (polish only, no new features)
+**Decision** Lead cards became Linear-style rows in one bordered list: tag dot, name · company, one-line reason, due text (score, product chip, rep avatar-on-mobile removed; tag/score still in the dot tooltip and the sheet). Stats became one slim line of numbers (same anchor links). Overdue shows 5 with "Show N more". Sheet: reason + follow-up date first, points chips behind a "Why Hot?" expander, draft in its own card, chat last (latest 3 messages, "Show earlier"). Add lead: five required fields up front, rest under "More details". Red is now used only for overdue text and the Hot dot; negative-point chips are grey. Indigo stays the one accent. **Rejected** a `?filter=` URL state for the stats (new feature).
